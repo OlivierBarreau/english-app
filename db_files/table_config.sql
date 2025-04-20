@@ -46,13 +46,15 @@ CREATE TABLE IF NOT EXISTS question (
     question_content JSON
 );
 
--- Table de liaison entre les programmes et les leçons
-CREATE TABLE IF NOT EXISTS program_lesson (
+
+-- Table d'association entre les lecons et un programme
+CREATE TABLE IF NOT EXISTS program_lessons (
     program_id INT REFERENCES program(id) ON DELETE CASCADE,
     lesson_id INT REFERENCES lesson(id) ON DELETE CASCADE,
-    PRIMARY KEY (program_id, lesson_id), -- Clé primaire composite pour éviter les doublons
-    ordre INT
+    lesson_order INT,  -- Position de la leçon dans le programme
+    PRIMARY KEY (program_id, lesson_id)
 );
+
 
 CREATE TABLE IF NOT EXISTS question_result (
     id SERIAL PRIMARY KEY,
@@ -61,3 +63,4 @@ CREATE TABLE IF NOT EXISTS question_result (
     is_answer_correct BOOLEAN,  -- Was the answer correct? (true/false)
     user_answer VARCHAR(100)  -- The user's answer
 );
+
