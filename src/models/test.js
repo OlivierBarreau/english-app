@@ -3,6 +3,8 @@ const { getQuestionById, addQuestion, updateQuestionById, deleteQuestionById } =
 const { getLessonById, addLesson, updateLessonById, deleteLessonById } = require('./lessonModel');
 const { getLessonResultById, addLessonResult, updateLessonResultById, deleteLessonResultById } = require('./lesson_resultModel');
 const { addQuestionResult, getQuestionResultById, updateQuestionResultById, deleteQuestionResultById } = require('./question_resultModel');
+const { addProgramById, getProgramById, updateProgramById, deleteProgramById } = require('./programModel.js');
+const { addLessonToProgram, getLessonsForProgram, updateLessonOrder, removeLessonFromProgram } = require('./program_lessonModel.js');
 const pool = require('./db_connexion');
 
 // Test all functions
@@ -171,7 +173,59 @@ async function testQuestionResult() {
     }
 }
 
-testQuestionResult();
+
+async function testcreateProgramWithTwoLessons(userId) {
+    try {
+        // 1. Create Lesson 1
+        console.log('Creating lesson 1...');
+        const lesson1 = await addLesson(
+            'Grammar',
+            'Present Simple',
+            { description: 'Basics of present simple' },
+            3,
+            'A1'
+        );
+        console.log('Lesson 1 created:', lesson1);
+
+        // 2. Create Lesson 2
+        console.log('Creating lesson 2...');
+        const lesson2 = await addLesson(
+            'Vocabulary',
+            'Common Phrases',
+            { description: 'Learn common everyday phrases' },
+            2,
+            'A1'
+        );
+        console.log('Lesson 2 created:', lesson2);
+
+        // 3. Create Program 
+        console.log('Creating program...');
+        const program = await addProgramById(userId, 50, 80); // Initial completion and correct answer rates = 0
+        console.log('Program created:', program);
+
+        // 4. Link lessons to the program
+        console.log('Linking lessons to program...');
+        await addLessonToProgram(program.id, lesson1.id, 1); // order 1
+        await addLessonToProgram(program.id, lesson2.id, 2); // order 2
+        console.log('Lessons linked to program');
+
+        // 5. Fetch and display lessons in program
+        console.log('Fetching lessons in program...');
+        const lessonsInProgram = await getLessonsForProgram(program.id);
+        console.log('Lessons in program:', JSON.stringify(lessonsInProgram, null, 2));
+
+    } catch (error) {
+        console.error('Error creating program with lessons:', error);
+    } finally {
+        pool.end(); // Always close DB connection
+    }
+}
+
+// Example usage
+testcreateProgramWithTwoLessons(1); // Replace 1 with an actual user_id in your DB
+
+
+//testQuestionResult();
 
 //test_lesson_result();
 //test_lesson();
