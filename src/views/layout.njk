@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Web App{% endblock %}</title>
+    <link rel="stylesheet" href="/css/tailwind.css">
+</head>
+<body class = "flex flex-2/12 flex-row h-screen bg-white">
+
+    <div class = "border-r p-3 mr-2 bg-blue-500">
+        {% include "partials/header.njk" %}  {# Include header across all pages #}
+    </div>
+    
+    <div class = "flex-10/12">
+        <main>
+            {% block content %} {% endblock %}
+        </main>
+
+        {% include "partials/footer.njk" %}  {# Include footer across all pages #}
+    </div>
+</body>
+</html>
