@@ -10,6 +10,17 @@ async function getUserById(userId) {
         throw error;
     }
 }
+// Function to get user by Login
+async function getUserByLogin(userLogin) {
+    try {
+        const result = await pool.query('SELECT * FROM users WHERE login = $1', [userLogin]);
+        return result.rows[0] || null; // Return user data or null if not found
+    } catch (error) {
+        console.error('Error fetching user:', error);
+        throw error;
+    }
+}
+
 
 // Function to add a new user
 async function addUser(login, password, firstname, lastname) {
@@ -53,5 +64,5 @@ async function deleteUserById(userId) {
 
 // Export functions so they can be used in other files
 module.exports = { 
-    getUserById, addUser, updateUserById, deleteUserById 
+    getUserById, getUserByLogin, addUser, updateUserById, deleteUserById 
 };
