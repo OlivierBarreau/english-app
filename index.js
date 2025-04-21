@@ -4,6 +4,8 @@ const session = require('express-session');
 const nunjucks = require("nunjucks");
 const bodyParser = require('body-parser');
 require('dotenv').config();
+const authRoutes = require('./src/routes/auth');
+const pagesRoutes = require('./src/routes/pagesRoutes'); // Import the home routes
 
 // require("dotenv").config();
 const app = express();
@@ -31,50 +33,22 @@ app.use(
   );
   
 // app.use(express.static(path.join(__dirname, "public")));
-
-app.get('/', (req, res) => {
-    if (req.session && req.session.user) {
-        res.render("home", { user: req.session.user });
-    }else {
-        res.redirect("/signin");
-    }
-});
-
-// Handle POST request for sign-in
-app.post('/', (req, res) => {
-    const { email, password } = req.body;
-  
-    // Example: Verify user credentials (replace with your logic)
-    if (email === 'alice@example.com' && password === 'mdp') {
-      // Save user information in the session
-      req.session.user = { email };
-  
-      // Redirect to dashboard
-      res.redirect('/');
-    } else {
-      // Send error message if invalid
-      res.status(401).send('Invalid email or password');
-    }
-  });
-
-app.get('/grammar', (req, res) => {
-    if (req.session && req.session.user) {
-        res.render("grammar", { user: req.session.user });
-    }else {
-        res.redirect("/signin");
-    }
-});
+// Use the auth routes
+app.use(authRoutes);
+app.use(pagesRoutes); // Use the home routes
 
 app.get('/vocabulary', (req, res) => {
     if (req.session && req.session.user) {
+        
         res.render("vocabulary", { user: req.session.user });
     }else {
         res.redirect("/signin");
-    }    
+    }
 });
 
 app.get('/expressions', (req, res) => {
     if (req.session && req.session.user) {
+        
         res.render("expressions", { user: req.session.user });
     }else {
         res.redirect("/signin");
@@ -83,25 +57,29 @@ app.get('/expressions', (req, res) => {
 
 app.get('/articles', (req, res) => {
     if (req.session && req.session.user) {
+        
         res.render("articles", { user: req.session.user });
     }else {
         res.redirect("/signin");
     }
 });
 
-app.get('/signin', (req, res) => {
-    res.render("signin");
+app.get('/profile', (req, res) => {
+    if (req.session && req.session.user) {
+        
+        res.render("profile", { user: req.session.user });
+    }else {
+        res.redirect("/signin");
+    }
 });
 
-app.get('/signout', (req, res) => {
-    // Destroy the session and redirect to sign-in page
-    req.session.destroy((err) => {
-        if (err) {
-            console.error('Error destroying session:', err);
-            return res.status(500).send('Internal server error');
-        }
-        res.redirect('/signin');
-    });
+app.get('/settings', (req, res) => {
+    if (req.session && req.session.user) {
+        
+        res.render("settings", { user: req.session.user });
+    }else {
+        res.redirect("/signin");
+    }
 });
 
 const server = app.listen(8000, () => {

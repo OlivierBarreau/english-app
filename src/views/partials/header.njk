@@ -1,18 +1,39 @@
-<header class="h-max">
+<header class="flex flex-col h-full justify-between">
     <nav>
-        <ul class = "flex flex-col justify-between text-base/12 font-semibold text-white">
-            <li><a href="/">Home</a></li>
-            <li><a href="/grammar">Grammar</a></li>
-            <li><a href="/vocabulary">Vocabulary</a></li>
-            <li><a href="/expressions">Expressions</a></li>
-            <li><a href="/articles">Articles</a></li>
+        <ul class = "flex flex-col justify-between text-sm/12 font-semibold text-white">
+            <li class="flex flex-row items-center">
+                 <img class="h-5 w-auto mr-2" src="maison.png" alt="maison">
+                <a href="/">Home</a>
+            </li>
+            <li class="flex flex-row items-center">
+                <img class="h-5 w-auto mr-2" src="abc.png" alt="abc">
+                <a href="/grammar">Grammar</a>
+            </li>
+            <li class="flex flex-row items-center">
+                <img class="h-5 w-auto mr-2" src="dictionnaire.png" alt="dictionnaire">
+                <a href="/vocabulary">Vocabulary</a>
+            </li>
+            <li class="flex flex-row items-center">
+                <img class="h-5 w-auto mr-2" src="jeux.png" alt="mots">
+                <a href="/expressions">Expressions</a>
+            </li>
+            <li class="flex flex-row items-center">
+                <img class="h-5 w-auto mr-2" src="journal.png" alt="articles">
+                <a href="/articles">Articles</a>
+            </li>
         </ul>
     </nav>
-    
-    <div class="flex flex-col justify-between text-sm/12 font-semibold text-white">
-        <ul class = "flex flex-col justify-between text-sm/12 font-semibold text-white">
-            <li><a href="/profile">Profile</a></li>
-            <li><a href="/settings">Settings</a></li>
+
+    <div>
+        <ul class = "flex flex-col justify-between text-xs/8 font-semibold text-white">
+            <li class="flex flex-row items-center">
+                <img class="h-5 w-auto mr-2" src="utilisateur.png" alt="utilisateur">
+                <a href="/profile">Profile</a>
+            </li>
+            <li class="flex flex-row items-center">
+                <img class="h-5 w-auto mr-2" src="parametres.png" alt="parametres">
+                <a href="/settings">Settings</a>
+            </li>
              <li><a href="/signout">Disconnect</a></li>
         </ul>
     </div>
