@@ -1,22 +1,27 @@
-const {  getUserById, addUser, updateUserById, deleteUserById } = require('./userModel');
+const {  getUserById, addUser, updateUserById, deleteUserById, getUserByLogin } = require('./userModel');
 const { getQuestionById, addQuestion, updateQuestionById, deleteQuestionById } = require('./questionModel');
-const { getLessonById, addLesson, updateLessonById, deleteLessonById } = require('./lessonModel');
+const { getLessonById, addLesson, updateLessonById, deleteLessonById, getLessonsByType } = require('./lessonModel');
 const { getLessonResultById, addLessonResult, updateLessonResultById, deleteLessonResultById } = require('./lesson_resultModel');
 const { addQuestionResult, getQuestionResultById, updateQuestionResultById, deleteQuestionResultById } = require('./question_resultModel');
-const { addProgramById, getProgramById, updateProgramById, deleteProgramById } = require('./programModel.js');
+const { addProgram, getProgramById, updateProgramById, deleteProgramById } = require('./programModel.js');
 const { addLessonToProgram, getLessonsForProgram, updateLessonOrder, removeLessonFromProgram } = require('./program_lessonModel.js');
+const { fillProgram } = require('./globalModels.js');
 const pool = require('./db_connexion');
 
 // Test all functions
 async function test_user() {
     try {
         console.log('Adding user...');
-        const newUser = await addUser('test@example.com', 'password123', 'Test', 'User');
+        const newUser = await addUser('test3@example.com', 'password123', 'Test3', 'User3');
         console.log('User Added:', newUser);
 
         console.log('Fetching user by ID...');
-        const fetchedUser = await getUserById(newUser.id);
-        console.log('Fetched User:', fetchedUser);
+        const fetchedUserId = await getUserById(newUser.id);
+        console.log('Fetched User:', fetchedUserId);
+
+        console.log('Fetching user by Login...');
+        const fetchedUserLogin = await getUserByLogin(newUser.login);
+        console.log('Fetched User:', fetchedUserLogin);
 
         console.log('Updating user...');
         const updatedUser = await updateUserById(newUser.id, { firstname: 'Updated' });
@@ -200,7 +205,7 @@ async function testcreateProgramWithTwoLessons(userId) {
 
         // 3. Create Program 
         console.log('Creating program...');
-        const program = await addProgramById(userId, 50, 80); // Initial completion and correct answer rates = 0
+        const program = await addProgram(userId, 50, 80); // Initial completion and correct answer rates = 0
         console.log('Program created:', program);
 
         // 4. Link lessons to the program
@@ -221,8 +226,83 @@ async function testcreateProgramWithTwoLessons(userId) {
     }
 }
 
+async function testGetLessonsByType() {
+    // console.log('Creating Vocabulary Lesson 2...');
+    // const lesson2 = await addLesson(
+    //     'Vocabulary',
+    //     'Business Vocabulary Basics',
+    //     {
+    //         description: 'This lesson introduces key business vocabulary used in meetings and emails.',
+    //         examples: [
+    //             { term: 'Touch base', meaning: 'To make contact or update someone briefly.' },
+    //             { term: 'Circle back', meaning: 'To revisit a topic or conversation later.' },
+    //             { term: 'Low-hanging fruit', meaning: 'Tasks or goals that are easily achievable.' }
+    //         ]
+    //     },
+    //     4,
+    //     'B2'
+    // );
+    // console.log('Vocabulary Lesson 2 Created:', lesson2);
+
+    const lessons = await getLessonsByType("Vocabulary");
+    console.log('list of lessons for requested type =',lessons);
+}
+
+
+async function testFillProgram() {
+    try {
+        console.log('Creating first lesson...');
+        const lesson1 = await addLesson(
+            'Vocabulary',
+            'Common English Idioms',
+            {
+                description: 'This lesson covers common English idioms and their meanings.',
+                examples: [
+                    { idiom: 'Break the ice', meaning: 'To start a conversation in a social setting.' },
+                    { idiom: 'Piece of cake', meaning: 'Something that is very easy to do.' },
+                    { idiom: 'Under the weather', meaning: 'Feeling unwell or sick.' }
+                ]
+            },
+            5,
+            'B1'
+        );
+        console.log('Lesson 1 created:', lesson1);
+
+        console.log('Creating second lesson...');
+        const lesson2 = await addLesson(
+            'Vocabulary',
+            'Business Vocabulary Basics',
+            {
+                description: 'This lesson introduces key business vocabulary used in meetings and emails.',
+                examples: [
+                    { word: 'Synergy', meaning: 'Combined effort greater than individual parts' },
+                    { word: 'Stakeholder', meaning: 'Someone affected by business decisions' },
+                    { word: 'Leverage', meaning: 'Use something to maximum advantage' }
+                ]
+            },
+            4,
+            'B2'
+        );
+        console.log('Lesson 2 created:', lesson2);
+
+        console.log('Creating a new program for user ID 1...');
+        const newProgram = await addProgram(1, 0, 0); // completion = 0, right_answer = 0
+        console.log('Program created:', newProgram);
+
+        console.log('Filling program with lessons...');
+        await fillProgram(newProgram.id, [lesson1.id, lesson2.id]);
+
+        const lessons = await getLessonsForProgram(newProgram.id)
+        console.log('Getting all lessons from program :', lessons);
+
+        console.log('Test complete.');
+    } catch (error) {
+        console.error('Error in testFillProgram:', error);
+    }
+}
+
 // Example usage
-testcreateProgramWithTwoLessons(1); // Replace 1 with an actual user_id in your DB
+//testcreateProgramWithTwoLessons(1); // Replace 1 with an actual user_id in your DB
 
 
 //testQuestionResult();
@@ -231,3 +311,5 @@ testcreateProgramWithTwoLessons(1); // Replace 1 with an actual user_id in your 
 //test_lesson();
 //test_user();
 //test_question();
+//testGetLessonsByType();
+testFillProgram();

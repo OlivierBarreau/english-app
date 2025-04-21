@@ -1,7 +1,7 @@
 const pool = require('./db_connexion');
 
 // ✅ Ajouter un programme
-async function addProgramById(userId, programCompletion, programRightAnswer) {
+async function addProgram(userId, programCompletion, programRightAnswer) {
     try {
         const result = await pool.query(
             'INSERT INTO program (user_id, program_completion, program_right_answer) VALUES ($1, $2, $3) RETURNING *',
@@ -51,9 +51,12 @@ async function deleteProgramById(programId) {
     }
 }
 
+
+
+
 module.exports = {
-    addProgramById,
+    addProgram,
     getProgramById,
     updateProgramById,
-    deleteProgramById
+    deleteProgramById,
 };
