@@ -4,8 +4,8 @@
 -- Insert sample data
 INSERT INTO users (login, password, firstname, lastname) 
 VALUES 
-('alice@example.com','mdp','alice', 'dupont'),
-('lucas.grospellier@orange.fr','lucasmdp','lucas', 'grospellier');
+('alice@example.com','$2b$10$dr5qfCazDFtHGwqY6RRLvuDWDnzsrkRyUJSPuKzC/7v7c1FPjxkSm','alice', 'dupont'), -- password : mdp
+('lucas.grospellier@orange.fr','$2b$10$7AfJr7IsMcJAdCLVSVYTce244AnFFm50lS5/OEYSkJ0R4WkF6GPlW','lucas', 'grospellier');-- password : lucasmdp
 
 INSERT INTO lesson (lesson_type, lesson_title, lesson_content, lesson_importance, lesson_level) 
 VALUES 

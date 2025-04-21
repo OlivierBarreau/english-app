@@ -4,6 +4,15 @@
 
 {% block content %}
 
-<p class="text-2xl mb-2"> Welcome to vocabulary page </p>
-
+<p class="text-2xl my-2 ml-10"> Vocabulary </p>
+<div class="flex flex-col justify-around overflow-y-auto h-96">
+    {% for lesson in lessons %}
+        <div class="flex flex-col w-60 h-auto rounded-2xl p-1 my-2 bg-blue-200">
+            <h2 class="font-bold">{{ lesson.lesson_title }}</h2>
+            <p>Description: {{ lesson.lesson_content.description }}</p>
+            <p>Examples: {{ lesson.lesson_content.examples }}</p>
+            <a href="/lessons/{{ lesson.id }}" class="btn">View Lesson</a>
+        </div>
+    {% endfor %}
+</div>
 {% endblock %}
