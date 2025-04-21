@@ -66,7 +66,7 @@ async function getLessonsByLesson_Title(lesson_title) {
     try {
         const result = await pool.query(
             'SELECT * FROM lesson WHERE lesson_title = $1',
-            [title]
+            [lesson_title]
         );
         //console.log(result.rows);
         return result.rows;
