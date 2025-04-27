@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 require('dotenv').config();
 const authRoutes = require('./src/routes/auth');
 const pagesRoutes = require('./src/routes/pagesRoutes'); // Import the home routes
+const profileRoutes = require('./src/routes/profileRoutes'); // Import the profile routes
 
 // require("dotenv").config();
 const app = express();
@@ -36,15 +37,7 @@ app.use(
 // Use the auth routes
 app.use(authRoutes);
 app.use(pagesRoutes); // Use the home routes
-
-app.get('/vocabulary', (req, res) => {
-    if (req.session && req.session.user) {
-        
-        res.render("vocabulary", { user: req.session.user });
-    }else {
-        res.redirect("/signin");
-    }
-});
+app.use(profileRoutes); // Use the profile routes
 
 app.get('/expressions', (req, res) => {
     if (req.session && req.session.user) {
@@ -59,15 +52,6 @@ app.get('/articles', (req, res) => {
     if (req.session && req.session.user) {
         
         res.render("articles", { user: req.session.user });
-    }else {
-        res.redirect("/signin");
-    }
-});
-
-app.get('/profile', (req, res) => {
-    if (req.session && req.session.user) {
-        
-        res.render("profile", { user: req.session.user });
     }else {
         res.redirect("/signin");
     }

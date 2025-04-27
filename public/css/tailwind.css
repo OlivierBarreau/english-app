@@ -797,6 +797,9 @@
   .h-14 {
     height: calc(var(--spacing) * 14);
   }
+  .h-64 {
+    height: calc(var(--spacing) * 64);
+  }
   .h-96 {
     height: calc(var(--spacing) * 96);
   }
@@ -2441,10 +2444,26 @@
       max-width: var(--container-sm);
     }
   }
+  .sm\:grid-cols-2 {
+    @media (width >= 40rem) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .sm\:text-sm {
+    @media (width >= 40rem) {
+      font-size: var(--text-sm);
+      line-height: var(--tw-leading, var(--text-sm--line-height));
+    }
+  }
   .sm\:text-sm\/6 {
     @media (width >= 40rem) {
       font-size: var(--text-sm);
       line-height: calc(var(--spacing) * 6);
+    }
+  }
+  .lg\:grid-cols-3 {
+    @media (width >= 64rem) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
   .lg\:px-8 {

@@ -52,6 +52,19 @@ async function updateUserById(userId, updates) {
     }
 }
 
+async function updateUserPassword (userId, newPassword) {
+    try {
+        const result = await pool.query(
+            'UPDATE users SET password = $1 WHERE id = $2 RETURNING *',
+            [newPassword, userId]
+        );
+        return result.rows[0] || null;
+    } catch (error) {
+        console.error('Error updating user password:', error);
+        throw error;
+    }
+};
+
 // Function to delete user by ID
 async function deleteUserById(userId) {
     try {
@@ -65,5 +78,5 @@ async function deleteUserById(userId) {
 
 // Export functions so they can be used in other files
 module.exports = { 
-    getUserById, getUserByLogin, addUser, updateUserById, deleteUserById 
+    getUserById, getUserByLogin, addUser, updateUserById, updateUserPassword, deleteUserById 
 };
