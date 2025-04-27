@@ -60,9 +60,36 @@ async function removeLessonFromProgram(programId, lessonId) {
     }
 }
 
+async function getLessonsWithResultsForUser(programId, userId) {
+
+    try {
+        const query = `
+        SELECT 
+            lesson.id, 
+            lesson.lesson_title, 
+            lesson.lesson_content, 
+            lesson_result.lesson_completion, 
+            lesson_result.lesson_right_answer
+        FROM lesson
+        JOIN lesson_result ON lesson.id = lesson_result.lesson_id
+        JOIN program_lessons ON program_lessons.lesson_id = lesson.id
+        WHERE program_lessons.program_id = $1 AND lesson_result.user_id = $2
+      `;  
+    
+        const result = await pool.query(query, [programId, userId]);
+        return result.rows;
+    } catch (error) {
+        console.error('Error with getLessonsWithResultsForUser:', error);
+        throw error;
+    }
+}
+
+
+
 module.exports = {
     addLessonToProgram,
     getLessonsForProgram,
     updateLessonOrder,
-    removeLessonFromProgram
+    removeLessonFromProgram,
+    getLessonsWithResultsForUser
 };

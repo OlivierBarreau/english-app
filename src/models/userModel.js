@@ -25,9 +25,10 @@ async function getUserByLogin(userLogin) {
 // Function to add a new user
 async function addUser(login, password, firstname, lastname) {
     try {
+        const hashedPassword = await bcrypt.hash(password, 10); // Hash the password with salt rounds = 10
         const result = await pool.query(
             'INSERT INTO users (login, password, firstname, lastname) VALUES ($1, $2, $3, $4) RETURNING *',
-            [login, password, firstname, lastname]
+            [login, hashedPassword, firstname, lastname]
         );
         return result.rows[0];
     } catch (error) {

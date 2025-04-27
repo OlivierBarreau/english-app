@@ -66,7 +66,7 @@ async function getLessonsByLesson_Title(lesson_title) {
     try {
         const result = await pool.query(
             'SELECT * FROM lesson WHERE lesson_title = $1',
-            [title]
+            [lesson_title]
         );
         //console.log(result.rows);
         return result.rows;
@@ -80,4 +80,4 @@ async function getLessonsByLesson_Title(lesson_title) {
 // Export functions so they can be used in other files
 module.exports = { 
     addLesson, getLessonById, getLessonsByLesson_Title, updateLessonById, deleteLessonById, getLessonsByType
-};
+}
