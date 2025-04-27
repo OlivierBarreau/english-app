@@ -1,13 +1,86 @@
 const express = require('express');
 const path = require('path');
+const session = require('express-session');
+const nunjucks = require("nunjucks");
+const bodyParser = require('body-parser');
+require('dotenv').config();
+const authRoutes = require('./src/routes/auth');
+const pagesRoutes = require('./src/routes/pagesRoutes'); // Import the home routes
 
+// require("dotenv").config();
 const app = express();
 
-app.use(express.static(path.join(__dirname, "public")));
+// Configure Nunjucks
+nunjucks.configure("src/views", {
+    autoescape: true,
+    express: app
+  });
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "home.html"));
-})
+app.set("view engine", "njk"); // Use .njk for Nunjucks files
+
+app.use(express.static("public"));
+// Middleware to parse form data
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Configure session middleware
+app.use(
+    session({
+      secret: process.env.SESSION_SECRET, // Replace with a strong secret key
+      resave: false,
+      saveUninitialized: true,
+      cookie: { secure: false }, // Set `secure: true` if using HTTPS
+    })
+  );
+  
+// app.use(express.static(path.join(__dirname, "public")));
+// Use the auth routes
+app.use(authRoutes);
+app.use(pagesRoutes); // Use the home routes
+
+app.get('/vocabulary', (req, res) => {
+    if (req.session && req.session.user) {
+        
+        res.render("vocabulary", { user: req.session.user });
+    }else {
+        res.redirect("/signin");
+    }
+});
+
+app.get('/expressions', (req, res) => {
+    if (req.session && req.session.user) {
+        
+        res.render("expressions", { user: req.session.user });
+    }else {
+        res.redirect("/signin");
+    }
+});
+
+app.get('/articles', (req, res) => {
+    if (req.session && req.session.user) {
+        
+        res.render("articles", { user: req.session.user });
+    }else {
+        res.redirect("/signin");
+    }
+});
+
+app.get('/profile', (req, res) => {
+    if (req.session && req.session.user) {
+        
+        res.render("profile", { user: req.session.user });
+    }else {
+        res.redirect("/signin");
+    }
+});
+
+app.get('/settings', (req, res) => {
+    if (req.session && req.session.user) {
+        
+        res.render("settings", { user: req.session.user });
+    }else {
+        res.redirect("/signin");
+    }
+});
 
 const server = app.listen(8000, () => {
     console.log(`The application started on port ${server.address().port}`);
