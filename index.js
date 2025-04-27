@@ -37,15 +37,6 @@ app.use(
 app.use(authRoutes);
 app.use(pagesRoutes); // Use the home routes
 
-app.get('/vocabulary', (req, res) => {
-    if (req.session && req.session.user) {
-        
-        res.render("vocabulary", { user: req.session.user });
-    }else {
-        res.redirect("/signin");
-    }
-});
-
 app.get('/expressions', (req, res) => {
     if (req.session && req.session.user) {
         
