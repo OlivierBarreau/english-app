@@ -80,4 +80,4 @@ async function getLessonsByLesson_Title(lesson_title) {
 // Export functions so they can be used in other files
 module.exports = { 
     addLesson, getLessonById, getLessonsByLesson_Title, updateLessonById, deleteLessonById, getLessonsByType
-};
+}

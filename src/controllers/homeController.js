@@ -8,7 +8,7 @@ const getHome = async (req, res) => {
 
         try {
             // Fetch lessons for the specified program ID
-            const lessons = await program_lessons.getLessonsForProgram(1);
+            const lessons = await program_lessons.getLessonsWithResultsForUser(1,1);
             
             // res.render("home", { user: req.session.user });
             if (lessons.length > 0) {
