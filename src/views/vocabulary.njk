@@ -18,7 +18,7 @@
 <script>
     function filterLessons() {
         const query = document.getElementById('search-bar').value.toLowerCase();
-        const lessons = document.querySelectorAll('.flex.flex-col.w-60.h-auto');
+        const lessons = document.querySelectorAll('.flex.flex-col.w-full.h-auto');
         lessons.forEach(lesson => {
             const title = lesson.querySelector('h2').textContent.toLowerCase();
             lesson.style.display = title.includes(query) ? 'block' : 'none';
