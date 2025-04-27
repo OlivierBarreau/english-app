@@ -4,7 +4,7 @@ const { getLessonById, addLesson, updateLessonById, deleteLessonById, getLessons
 const { getLessonResultById, addLessonResult, updateLessonResultById, deleteLessonResultById } = require('./lesson_resultModel');
 const { addQuestionResult, getQuestionResultById, updateQuestionResultById, deleteQuestionResultById } = require('./question_resultModel');
 const { addProgram, getProgramById, updateProgramById, deleteProgramById } = require('./programModel.js');
-const { addLessonToProgram, getLessonsForProgram, updateLessonOrder, removeLessonFromProgram } = require('./program_lessonModel.js');
+const { addLessonToProgram, getLessonsForProgram, updateLessonOrder, removeLessonFromProgram, getLessonsWithResultsForUser } = require('./program_lessonModel.js');
 const { fillProgram } = require('./globalModels.js');
 const pool = require('./db_connexion');
 
@@ -538,6 +538,10 @@ async function addTestData() {
     await addQuestionResult(lessonResult10.id, question12.id, false, "");
 }
 
+async function testGetLessonsWithResults() {
+    const lessons = await getLessonsWithResultsForUser(1, 1);
+    console.log(lessons); // Now you can see the resolved value
+}
 
 
 
@@ -554,4 +558,5 @@ async function addTestData() {
 //test_question();
 //testGetLessonsByType();
 //testFillProgram();
-addTestData();
+//addTestData();
+testGetLessonsWithResults()
