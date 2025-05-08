@@ -1,0 +1,43 @@
+{% extends "layout.njk" %}
+
+{% block title %} TOEIC Reading Test {% endblock %}
+
+{% block content %}
+<h1 class="text-2xl my-4 ml-10">TOEIC Reading Test</h1>
+<p class="ml-10 mb-4 text-gray-600">Read the text below and answer the questions.</p>
+
+<div class="ml-10 mb-4">
+    <p class="border border-gray-300 p-4 bg-gray-100">{{ text }}</p>
+</div>
+
+<div class="ml-10">
+    <form action="/toeic/reading/submit" method="POST">
+        {% for question in questions %}
+        <div class="mb-4">
+            <h3 class="text-lg font-semibold">Question {{ loop.index }}: {{ question.question }}</h3>
+            {% if question.type == 'multiple-choice' %}
+            <ul class="list-disc list-inside">
+                {% for option in question.options %}
+                <li>
+                    <input type="radio" name="q{{ question.id }}" value="{{ option }}" required> {{ option }}
+                </li>
+                {% endfor %}
+            </ul>
+            {% elif question.type == 'true-false' %}
+            <ul class="list-disc list-inside">
+                <li>
+                    <input type="radio" name="q{{ question.id }}" value="True" required> True
+                </li>
+                <li>
+                    <input type="radio" name="q{{ question.id }}" value="False"> False
+                </li>
+            </ul>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">Submit</button>
+    </form>
+</div>
+
+{% endblock %}

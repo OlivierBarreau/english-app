@@ -1,0 +1,32 @@
+{% extends "layout.njk" %}
+
+{% block title %} TOEIC Introduction {% endblock %}
+
+{% block content %}
+<h1 class="text-2xl my-4 ml-10">TOEIC Test Introduction</h1>
+<p class="ml-10 mb-4 text-gray-600">Welcome to the TOEIC test. Here is what you need to know:</p>
+
+<div class="ml-10">
+    <h2 class="text-xl font-semibold text-blue-800 mb-2">Test Details</h2>
+    <ul class="list-disc list-inside text-gray-700">
+        <li><strong>Parts:</strong> Listening, Reading, Writing, Speaking</li>
+        <li><strong>Total Time:</strong> 2 hours</li>
+        <li><strong>Time per Part:</strong>
+            <ul class="list-disc ml-5">
+                <li>Listening: 45 minutes</li>
+                <li>Reading: 75 minutes</li>
+                <li>Writing: 30 minutes</li>
+                <li>Speaking: 10 minutes</li>
+            </ul>
+        </li>
+        <li><strong>Description:</strong> Each part evaluates specific skills to measure your English proficiency.</li>
+    </ul>
+</div>
+
+<div class="my-4 ml-10">
+    <form action="/toeic/start" method="POST">
+        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">Begin</button>
+    </form>
+</div>
+
+{% endblock %}
