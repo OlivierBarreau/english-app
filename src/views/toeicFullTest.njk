@@ -1,0 +1,91 @@
+{% extends "layout.njk" %}
+
+{% block title %} TOEIC Full Test {% endblock %}
+
+{% block content %}
+<h1 class="text-2xl my-4 ml-10">TOEIC Full Test</h1>
+<p class="ml-10 mb-4 text-gray-600">Complete the test within the allocated 2 hours. The timer will track your progress.</p>
+
+<div class="ml-10 mb-4">
+    <h2 class="text-xl font-semibold text-blue-800">Time Remaining: <span id="timer">02:00:00</span></h2>
+</div>
+
+<!-- Listening Section -->
+<div class="ml-10 mb-8">
+    <h2 class="text-xl font-semibold">Listening Section</h2>
+    {% for part in listeningParts %}
+    <div class="mb-6">
+        <h3 class="text-lg font-semibold">{{ part.name }}</h3>
+        <p class="text-gray-600">{{ part.description }}</p>
+        {% for question in part.questions %}
+        <div class="mb-4">
+            <h4 class="text-base font-medium">Question {{ loop.index }}: {{ question.text }}</h4>
+            {% if question.type == 'multiple-choice' %}
+            <ul class="list-disc list-inside">
+                {% for option in question.options %}
+                <li>
+                    <input type="radio" name="q{{ question.id }}" value="{{ option }}" required> {{ option }}
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Reading Section -->
+<div class="ml-10 mb-8">
+    <h2 class="text-xl font-semibold">Reading Section</h2>
+    {% for part in readingParts %}
+    <div class="mb-6">
+        <h3 class="text-lg font-semibold">{{ part.name }}</h3>
+        <p class="text-gray-600">{{ part.description }}</p>
+        {% for question in part.questions %}
+        <div class="mb-4">
+            <h4 class="text-base font-medium">Question {{ loop.index }}: {{ question.text }}</h4>
+            {% if question.type == 'multiple-choice' %}
+            <ul class="list-disc list-inside">
+                {% for option in question.options %}
+                <li>
+                    <input type="radio" name="q{{ question.id }}" value="{{ option }}" required> {{ option }}
+                </li>
+                {% endfor %}
+            </ul>
+            {% elif question.type == 'fill-in-the-blank' %}
+            <input type="text" name="q{{ question.id }}" class="border border-gray-300 rounded p-2 w-full" required>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
+
+<div class="ml-10">
+    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">Submit Test</button>
+</div>
+
+<script>
+    // Timer logic
+    let timer = document.getElementById('timer');
+    let timeRemaining = 2 * 60 * 60; // 2 hours in seconds
+
+    function updateTimer() {
+        const hours = Math.floor(timeRemaining / 3600);
+        const minutes = Math.floor((timeRemaining % 3600) / 60);
+        const seconds = timeRemaining % 60;
+        timer.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+        if (timeRemaining > 0) {
+            timeRemaining--;
+        } else {
+            alert('Time is up! Submitting your test.');
+            document.querySelector('form').submit();
+        }
+    }
+
+    setInterval(updateTimer, 1000);
+</script>
+
+{% endblock %}

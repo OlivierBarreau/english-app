@@ -1,4 +1,5 @@
 const pool = require('./db_connexion'); // Import database connection
+const bcrypt = require('bcrypt'); // Import bcrypt for password hashing
 
 // Function to get user by ID
 async function getUserById(userId) {

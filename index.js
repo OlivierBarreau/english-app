@@ -66,6 +66,29 @@ app.get('/settings', (req, res) => {
     }
 });
 
+app.get('/toeic/listening', (req, res) => {
+    if (req.session && req.session.user) {
+        const audioFile = '/audio/sample.mp3'; // Simulated audio file
+        const questions = [
+            {
+                id: 1,
+                type: 'multiple-choice',
+                question: 'What is the main topic of the audio?',
+                options: ['Topic A', 'Topic B', 'Topic C', 'Topic D'],
+            },
+            {
+                id: 2,
+                type: 'short-answer',
+                question: 'What is the name of the speaker in the audio?'
+            }
+        ];
+
+        res.render('toeicListening', { user: req.session.user, audioFile, questions });
+    } else {
+        res.redirect('/signin');
+    }
+});
+
 const server = app.listen(8000, () => {
     console.log(`The application started on port ${server.address().port}`);
 });

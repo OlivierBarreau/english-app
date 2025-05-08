@@ -1,0 +1,21 @@
+{% extends "layout.njk" %}
+
+{% block title %} TOEIC Writing Test {% endblock %}
+
+{% block content %}
+<h1 class="text-2xl my-4 ml-10">TOEIC Writing Test</h1>
+<p class="ml-10 mb-4 text-gray-600">Read the prompt below and write your response.</p>
+
+<div class="ml-10 mb-4">
+    <p class="border border-gray-300 p-4 bg-gray-100">{{ prompt }}</p>
+</div>
+
+<div class="ml-10">
+    <form action="/toeic/writing/submit" method="POST">
+        <textarea name="response" rows="10" class="border border-gray-300 rounded p-2 w-full" required></textarea>
+
+        <button type="submit" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">Submit</button>
+    </form>
+</div>
+
+{% endblock %}
