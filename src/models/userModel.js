@@ -1,4 +1,5 @@
 const pool = require('./db_connexion'); // Import database connection
+const bcrypt = require('bcrypt');
 
 // Function to get user by ID
 async function getUserById(userId) {
@@ -23,12 +24,12 @@ async function getUserByLogin(userLogin) {
 
 
 // Function to add a new user
-async function addUser(login, password, firstname, lastname) {
+async function addUser(login, password, firstname, lastname, english_lvl, current_program_id) {
     try {
         const hashedPassword = await bcrypt.hash(password, 10); // Hash the password with salt rounds = 10
         const result = await pool.query(
-            'INSERT INTO users (login, password, firstname, lastname) VALUES ($1, $2, $3, $4) RETURNING *',
-            [login, hashedPassword, firstname, lastname]
+            'INSERT INTO users (login, password, firstname, lastname, english_lvl, current_program_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+            [login, hashedPassword, firstname, lastname, english_lvl, current_program_id]
         );
         return result.rows[0];
     } catch (error) {
@@ -40,10 +41,10 @@ async function addUser(login, password, firstname, lastname) {
 // Function to update user by ID
 async function updateUserById(userId, updates) {
     try {
-        const { login, password, firstname, lastname } = updates;
+        const { login, password, firstname, lastname, english_lvl, current_program_id} = updates;
         const result = await pool.query(
-            'UPDATE users SET login = COALESCE($1, login), password = COALESCE($2, password), firstname = COALESCE($3, firstname), lastname = COALESCE($4, lastname) WHERE id = $5 RETURNING *',
-            [login, password, firstname, lastname, userId]
+            'UPDATE users SET login = COALESCE($1, login), password = COALESCE($2, password), firstname = COALESCE($3, firstname), lastname = COALESCE($4, lastname), english_lvl = COALESCE($5, english_lvl), current_program_id = COALESCE($6, current_program_id) WHERE id = $7 RETURNING *',
+            [login, password, firstname, lastname, english_lvl, current_program_id, userId]
         );
         return result.rows[0] || null;
     } catch (error) {

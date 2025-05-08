@@ -5,8 +5,11 @@ CREATE TABLE IF NOT EXISTS users (
     login VARCHAR(100) UNIQUE,
     password VARCHAR(100),
     firstname VARCHAR(100),
-    lastname VARCHAR(100)
+    lastname VARCHAR(100),
+    english_lvl VARCHAR(100),
+    current_program_id INT
 );
+
 
 
 -- Create the lesson table
