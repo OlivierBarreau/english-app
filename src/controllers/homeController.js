@@ -5,7 +5,7 @@ const getHome = async (req, res) => {
     if (req.session && req.session.user) {
         
         const programId = req.params.programId; // Get the program ID from the request parameters
-
+        
         try {
             // Fetch lessons for the specified program ID
             const lessons = await program_lessons.getLessonsWithResultsForUser(1,1);

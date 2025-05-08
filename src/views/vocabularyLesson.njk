@@ -1,0 +1,32 @@
+{% extends "layout.njk" %}
+
+{% block title %} Grammar {% endblock %}
+
+{% block content %}
+
+<p class="text-2xl my-2 ml-10"><strong>Title:</strong> {{ lesson.lesson_title }}</p>
+
+<div class="my-4 ml-10">
+    <p class="text-lg"><strong>Description:</strong> {{ lesson.lesson_content.description }}</p>
+    <p class="text-lg"><strong>Level:</strong> {{ lesson.lesson_level }}</p>
+</div>
+
+<div class="my-4 ml-10">
+    <h2 class="text-xl font-semibold text-blue-800 mb-2">Examples</h2>
+    <ul class="list-disc list-inside text-gray-700">
+        {% for example in lesson.lesson_content.examples %}
+            <li>idiom : {{ example.idiom }}</li>
+            <li>meaning : {{ example.meaning }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="my-4 ml-10">
+    <button 
+        onclick="history.back()" 
+        class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">
+        Go Back
+    </button>
+</div>
+
+{% endblock %}

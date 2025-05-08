@@ -26,4 +26,25 @@ const getVocabulary = async (req, res) => {
 
 };
 
-module.exports = getVocabulary ;
+// Controller function to launch a specific vocabulary lesson by its ID
+const getVocabularyLesson = async (req, res) => {
+    const lessonId = req.params.lessonId;
+
+    // Logic to handle the lesson based on the lessonId
+    try {
+        const lesson = await lessonsM.getLessonById(lessonId);
+        if (lesson) {
+            res.render("vocabularyLesson", { lesson });
+        } else {
+            res.status(404).send('Lesson not found');
+        }
+    } catch (error) {
+        console.error('Error fetching lesson:', error);
+        res.status(500).send('Internal server error');
+    }
+};
+
+module.exports = {
+    getVocabulary,
+    getVocabularyLesson
+};
