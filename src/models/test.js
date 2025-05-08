@@ -12,7 +12,7 @@ const pool = require('./db_connexion');
 async function test_user() {
     try {
         console.log('Adding user...');
-        const newUser = await addUser('test3@example.com', 'password123', 'Test3', 'User3');
+        const newUser = await addUser('test3@example.com', 'password123', 'Test3', 'User3', 'A2', 0);
         console.log('User Added:', newUser);
 
         console.log('Fetching user by ID...');
@@ -132,7 +132,7 @@ async function test_lesson_result() {
 async function testQuestionResult() {
     try {
         console.log('Adding user...');
-        const newUser = await addUser('test4@example.com', 'password123', 'Test', 'User');
+        const newUser = await addUser('test4@example.com', 'password123', 'Test', 'User', 'C1', 0);
         console.log('User Added:', newUser);
 
         console.log('Adding lesson...');
@@ -306,9 +306,10 @@ async function testFillProgram() {
 }
 
 async function addTestData() {
-    const user1 = await addUser('alice@example.com', 'password123', 'Alice', 'Licea');
-    const user2 = await addUser('bob@example.com', 'securepass', 'Bob', 'Bob');
-    const user3 = await addUser('carol@example.com', 'mypassword', 'Carol', 'Rolca');
+    const user1 = await addUser('alice@example.com', 'password123', 'Alice', 'Licea','A1', 1);
+    const user2 = await addUser('bob@example.com', 'securepass', 'Bob', 'Bob','B2', 2);
+    const user3 = await addUser('carol@example.com', 'mypassword', 'Carol', 'Rolca','B2', 3);
+    
 
     const lesson1 = await addLesson(
             'Grammar',
@@ -562,5 +563,5 @@ async function testGetLessonsWithResults() {
 // test_question();
 //testGetLessonsByType();
 //testFillProgram();
-//addTestData();
-testGetLessonsWithResults()
+addTestData();
+//testGetLessonsWithResults()

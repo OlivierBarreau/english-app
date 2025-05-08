@@ -11,7 +11,7 @@
     <div class = "border-r p-3 mr-2 bg-blue-500">
         {% include "partials/header.njk" %}  {# Include header across all pages #}
     </div>
-    
+
     <div class = "flex-10/12">
         <main class = "flex flex-col min-h-11/12 bg-white">
             {% block content %} {% endblock %}
@@ -19,5 +19,9 @@
 
         {% include "partials/footer.njk" %}  {# Include footer across all pages #}
     </div>
+
+    {# Add this block for page-specific scripts #}
+    {% block scripts %}
+    {% endblock %}
 </body>
 </html>
