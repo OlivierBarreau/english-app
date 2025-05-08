@@ -1,0 +1,54 @@
+{% extends "layout.njk" %}
+
+{% block title %} TOEIC Test {% endblock %}
+
+{% block content %}
+<h1 class="text-2xl my-4 ml-10">TOEIC Test</h1>
+<p class="ml-10 mb-4 text-gray-600">Answer the following questions within the allocated time.</p>
+
+<div class="ml-10 mb-4">
+    <h2 class="text-xl font-semibold text-blue-800">Time Remaining: <span id="timer">02:00:00</span></h2>
+</div>
+
+<div class="ml-10">
+    <form action="/toeic/submit" method="POST">
+        <!-- Example question -->
+        <div class="mb-4">
+            <h3 class="text-lg font-semibold">Question 1: What is the capital of France?</h3>
+            <ul class="list-disc list-inside">
+                <li><input type="radio" name="q1" value="Paris" required> Paris</li>
+                <li><input type="radio" name="q1" value="London"> London</li>
+                <li><input type="radio" name="q1" value="Berlin"> Berlin</li>
+                <li><input type="radio" name="q1" value="Madrid"> Madrid</li>
+            </ul>
+        </div>
+
+        <!-- Add more questions dynamically -->
+
+        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">Submit</button>
+    </form>
+</div>
+
+<script>
+    // Timer logic
+    let timer = document.getElementById('timer');
+    let timeRemaining = 2 * 60 * 60; // 2 hours in seconds
+
+    function updateTimer() {
+        const hours = Math.floor(timeRemaining / 3600);
+        const minutes = Math.floor((timeRemaining % 3600) / 60);
+        const seconds = timeRemaining % 60;
+        timer.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+        if (timeRemaining > 0) {
+            timeRemaining--;
+        } else {
+            alert('Time is up! Submitting your test.');
+            document.querySelector('form').submit();
+        }
+    }
+
+    setInterval(updateTimer, 1000);
+</script>
+
+{% endblock %}

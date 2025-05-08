@@ -1,0 +1,39 @@
+{% extends "layout.njk" %}
+
+{% block title %} TOEIC Listening Test {% endblock %}
+
+{% block content %}
+<h1 class="text-2xl my-4 ml-10">TOEIC Listening Test</h1>
+<p class="ml-10 mb-4 text-gray-600">Listen to the audio and answer the questions below.</p>
+
+<div class="ml-10 mb-4">
+    <audio controls class="w-full">
+        <source src="{{ audioFile }}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+</div>
+
+<div class="ml-10">
+    <form action="/toeic/listening/submit" method="POST">
+        {% for question in questions %}
+        <div class="mb-4">
+            <h3 class="text-lg font-semibold">Question {{ loop.index }}: {{ question.question }}</h3>
+            {% if question.type == 'multiple-choice' %}
+            <ul class="list-disc list-inside">
+                {% for option in question.options %}
+                <li>
+                    <input type="radio" name="q{{ question.id }}" value="{{ option }}" required> {{ option }}
+                </li>
+                {% endfor %}
+            </ul>
+            {% elif question.type == 'short-answer' %}
+            <input type="text" name="q{{ question.id }}" class="border border-gray-300 rounded p-2 w-full" required>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">Submit</button>
+    </form>
+</div>
+
+{% endblock %}
