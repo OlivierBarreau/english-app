@@ -50,7 +50,18 @@ async function deleteQuestionById(questionId) {
     }
 }
 
+// Function to get all questions by lesson ID
+async function getQuestionsByLessonId(lessonId) {
+    try {
+        const result = await pool.query('SELECT * FROM question WHERE lesson_id = $1', [lessonId]);
+        return result.rows || [];
+    } catch (error) {
+        console.error('Error fetching questions:', error);
+        throw error;
+    }
+}
+
 // Export functions so they can be used in other files
 module.exports = { 
-    getQuestionById, addQuestion, updateQuestionById, deleteQuestionById
+    getQuestionById, addQuestion, updateQuestionById, deleteQuestionById, getQuestionsByLessonId
 };

@@ -22,6 +22,48 @@
 </div>
 
 <div class="my-4 ml-10">
+    <h2 class="text-xl font-semibold text-blue-800 mb-2">Exercises</h2>
+    <ul class="list-disc list-inside text-gray-700">
+        {% for exercise in questions %}
+            <li>{{ exercise.question_content.question }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="my-4 ml-10">
+    <h2 class="text-xl font-semibold text-blue-800 mb-2">Exercises</h2>
+    <ul class="list-disc list-inside text-gray-700">
+        {% for exercise in questions %}
+            <li>
+                <p><strong>Question:</strong> {{ exercise.question_content.question }}</p>
+                {% if exercise.question_type == "vocabulary" %}
+                    <p><strong>Options:</strong></p>
+                    <ul class="list-disc list-inside ml-4">
+                        {% for option in exercise.question_content.options %}
+                            <li>{{ option }}</li>
+                        {% endfor %}
+                    </ul>
+                {% elseif exercise.question_type == "grammar" %}
+                    <p><strong>Grammar Explanation:</strong> {{ exercise.question_content.explanation }}</p>
+                {% elseif exercise.question_type == "multiple-choice" %}
+                    <p><strong>Options:</strong></p>
+                    <ul class="list-disc list-inside ml-4">
+                        {% for option in exercise.question_content.options %}
+                            <li>
+                                <label>
+                                    <input type="checkbox" name="option" value="{{ option }}">
+                                    {{ option }}
+                                </label>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="my-4 ml-10">
     <button 
         onclick="history.back()" 
         class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">

@@ -1,5 +1,5 @@
 const {  getUserById, addUser, updateUserById, deleteUserById, getUserByLogin } = require('./userModel');
-const { getQuestionById, addQuestion, updateQuestionById, deleteQuestionById } = require('./questionModel');
+const { getQuestionById, addQuestion, updateQuestionById, deleteQuestionById, getQuestionsByLessonId } = require('./questionModel');
 const { getLessonById, addLesson, updateLessonById, deleteLessonById, getLessonsByType } = require('./lessonModel');
 const { getLessonResultById, addLessonResult, updateLessonResultById, deleteLessonResultById } = require('./lesson_resultModel');
 const { addQuestionResult, getQuestionResultById, updateQuestionResultById, deleteQuestionResultById } = require('./question_resultModel');
@@ -62,6 +62,10 @@ async function test_question() {
         console.log('Trying to fetch deleted question...');
         const checkDeletedQuestion = await getQuestionById(newQuestion.id);
         console.log('Deleted Question Exists:', checkDeletedQuestion);
+
+        console.log('Fetching questions by lesson ID...');
+        const questionsByLesson = await getQuestionsByLessonId(16); // Replace with actual lesson ID
+        console.log('Questions for Lesson ID 1:', questionsByLesson);
     } catch (error) {
         console.error('Test failed:', error);
     } finally {
@@ -555,7 +559,7 @@ async function testGetLessonsWithResults() {
 //test_lesson_result();
 //test_lesson();
 //test_user();
-//test_question();
+// test_question();
 //testGetLessonsByType();
 //testFillProgram();
 //addTestData();

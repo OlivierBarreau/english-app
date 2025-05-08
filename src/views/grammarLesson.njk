@@ -20,4 +20,97 @@
     </ul>
 </div>
 
+<div class="my-4 ml-10">
+    <h2 class="text-xl font-semibold text-blue-800 mb-4">Exercises</h2>
+    <div class="text-gray-700">
+        {% for exercise in questions %}
+            <div class="mb-6 p-4 border border-gray-300 rounded-lg shadow-md bg-white">
+                <p class="text-lg font-semibold text-gray-800 mb-2">
+                    {{ exercise.question_content.question }}
+                </p>
+                {% if exercise.question_type == "vocabulary" %}
+                    <p class="text-sm text-gray-600 mb-2"><strong>Options:</strong></p>
+                    <ul class="list-disc list-inside ml-4 text-gray-700">
+                        {% for option in exercise.question_content.options %}
+                            <li>{{ option }}</li>
+                        {% endfor %}
+                    </ul>
+                {% elseif exercise.question_type == "grammar" %}
+                    <p class="text-sm text-gray-600 mb-2"><strong>Grammar Explanation:</strong></p>
+                    <p class="text-gray-700">{{ exercise.question_content.explanation }}</p>
+                {% elseif exercise.question_type == "multiple-choice" %}
+                    <div class="flex flex-col gap-2 ml-4 text-gray-700">
+                        {% for option in exercise.question_content.options %}
+                            <div>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox" name="option-{{ loop.index }}" value="{{ option }}" class="mr-2">
+                                    {{ option }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% elseif exercise.question_type == "single-choice" %}
+                    <p class="text-sm text-gray-600 mb-2"><strong>Options:</strong></p>
+                    <ul class="list-disc list-inside ml-4 text-gray-700">
+                        {% for option in exercise.question_content.options %}
+                            <li>
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="option-{{ loop.index }}" value="{{ option }}" class="mr-2">
+                                    {{ option }}
+                                </label>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <button 
+                    onclick="verifyAnswer('{{ exercise.question_content.correctAnswer }}', this)" 
+                    class="mt-4 px-6 py-2 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled>
+                    Check Answer
+                </button>
+
+                <script>
+                    const button = document.querySelector('button[onclick^="verifyAnswer"]');
+                    const parentDiv1 = button.parentElement;
+                    const inputs = parentDiv1.querySelectorAll('input[name^="option"]');
+
+                    inputs.forEach(input => {
+                        input.addEventListener('change', () => {
+                            button.disabled = !Array.from(inputs).some(input => input.checked);
+                        });
+                    });
+                </script>
+                <p class="mt-2 text-sm text-gray-700 hidden result-message"></p>
+            </div>
+
+            <script>
+                function verifyAnswer(correctAnswer, button) {
+                    const parentDiv2 = button.parentElement;
+                    const selectedOption = parentDiv2.querySelector('input[name^="option"]:checked');
+                    const selectedValue = selectedOption ? selectedOption.value : null;
+
+                    const resultMessage = parentDiv2.querySelector('.result-message');
+                    if (selectedValue === correctAnswer) {
+                        resultMessage.textContent = "Correct!";
+                        resultMessage.classList.remove('hidden', 'text-red-500');
+                        resultMessage.classList.add('text-green-500');
+                    } else {
+                        resultMessage.textContent = "Incorrect. Try again.";
+                        resultMessage.classList.remove('hidden', 'text-green-500');
+                        resultMessage.classList.add('text-red-500');
+                    }
+                }
+            </script>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="my-4 ml-10">
+    <button
+        onclick="history.back()" 
+        class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">
+        Go Back
+    </button>
+</div>
+
 {% endblock %}
