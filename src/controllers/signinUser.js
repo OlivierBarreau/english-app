@@ -18,7 +18,7 @@ const signinUser = async (req, res) => {
     }
 
     // Save user information in the session
-    req.session.user = { email: user.login, firstname: user.firstname };
+    req.session.user = {id: user.id, email: user.login, firstname: user.firstname, lastname: user.lastname, english_lvl: user.english_lvl, current_program_id: user.current_program_id };
 
     // Redirect to the home page
     res.redirect('/');

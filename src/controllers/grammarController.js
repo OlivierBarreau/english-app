@@ -8,7 +8,7 @@ const getGrammar = async (req, res) => {
 
         try {
             // Fetch lessons for the specified program ID
-            const lessons = await lessonsM.getLessonsByType("grammer");
+            const lessons = await lessonsM.getLessonsByType("Grammar");
             
             if (lessons.length > 0) {
                 res.render("grammar", { user: req.session.user, lessons });
