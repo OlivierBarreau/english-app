@@ -9,7 +9,7 @@ VALUES
 
 INSERT INTO lesson (lesson_type, lesson_title, lesson_content, lesson_importance, lesson_level) 
 VALUES 
-('grammer', 'Futur continuous', 
+('grammar', 'Futur continuous', 
     '{"description": "This lesson is about futur continuous", "examples": ["When you come out of school tomorrow, I''ll be boarding a plane.",
 "Try to call before 8 o''clock. After that, we''ll be watching the match.",
 "You can visit us during the first week of July. I won''t be working then."]}', 2, 'B2'),
