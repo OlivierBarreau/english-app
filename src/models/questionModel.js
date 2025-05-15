@@ -61,7 +61,23 @@ async function getQuestionsByLessonId(lessonId) {
     }
 }
 
+// Function to get all question IDs by lesson ID
+async function getQuestionIdsByLessonId(lessonId) {
+    try {
+        const result = await pool.query('SELECT id FROM question WHERE lesson_id = $1', [lessonId]);
+        return result.rows.map(row => row.id) || [];
+    } catch (error) {
+        console.error('Error fetching question IDs:', error);
+        throw error;
+    }
+}
+
 // Export functions so they can be used in other files
 module.exports = { 
-    getQuestionById, addQuestion, updateQuestionById, deleteQuestionById, getQuestionsByLessonId
+    getQuestionById, 
+    addQuestion, 
+    updateQuestionById, 
+    deleteQuestionById, 
+    getQuestionsByLessonId,
+    getQuestionIdsByLessonId
 };

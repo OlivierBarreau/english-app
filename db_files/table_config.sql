@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS lesson (
     lesson_content JSON,
     lesson_importance INT,
     lesson_level VARCHAR(100)
+    
 );
 
 
