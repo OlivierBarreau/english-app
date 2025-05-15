@@ -18,6 +18,8 @@ nunjucks.configure("src/views", {
   });
 
 app.set("view engine", "njk"); // Use .njk for Nunjucks files
+// set json midedleware
+app.use(express.json());
 
 app.use(express.static("public"));
 // Middleware to parse form data
