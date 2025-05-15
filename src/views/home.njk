@@ -3,69 +3,104 @@
 {% block title %} Program {% endblock %}
 
 {% block content %}
-<h1 class="text-2xl my-2 ml-10">Welcome {{ user.firstname }}!</h1>
-<p class="ml-10 mb-4 text-gray-600">Here is your program:</p>
+<div class="container mx-auto px-4 py-6">
+  <div class="flex items-center mb-6">
+    <div class="bg-blue-100 rounded-full p-2 mr-3">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 4v12l-4-2-4 2V4M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+      </svg>
+    </div>
+    <div>
+      <h1 class="text-2xl font-bold text-gray-800">Welcome {{ user.firstname }}!</h1>
+      <p class="text-sm text-gray-600">Your learning journey - complete lessons to progress</p>
+    </div>
+  </div>
 
-{# This is where the SVG and lesson list wrapper go, specific to this page's content #}
-<div class="relative lessons-container-wrapper overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
-  <svg id="lines-svg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0;"></svg>
+  {# This is where the SVG and lesson list wrapper go, specific to this page's content #}
+  <div class="relative lessons-container-wrapper overflow-x-hidden overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 pb-10">
+    <svg id="lines-svg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0;"></svg>
 
-  <div class="flex flex-col space-y-8">
-    {% for lesson in lessons %}
-      <div class="lesson-block flex {% if loop.index % 2 == 0 %}justify-end{% else %}justify-start{% endif %} px-100">
-        <div class="w-80 h-auto p-4 shadow-md rounded-md
-                    {% if lesson.lesson_completion == 100 %}
-                      bg-gray-200 text-gray-500
-                    {% else %}
-                      bg-blue-100
-                    {% endif %}">
-          
-          <h2 class="text-lg font-semibold text-blue-800 mb-2">{{ lesson.lesson_title }}</h2>
+  <div class="flex flex-col space-y-16 max-w-5xl mx-auto">
+      {% for lesson in lessons %}
+        <div class="lesson-block flex {% if loop.index % 2 == 0 %}justify-end{% else %}justify-start{% endif %} relative px-4">
+          {% if not loop.first %}
+          <div class="lesson-marker absolute left-1/2 transform -translate-x-1/2 -top-8">
+            <div class="{% if lessons[loop.index0 - 1].lesson_completion == 100 %}bg-green-100 text-green-800{% else %}bg-blue-100 text-blue-800{% endif %} rounded-full px-3 py-1 text-xs font-semibold shadow-sm">
+              Lesson {{ loop.index }}
+            </div>
+          </div>
+          {% endif %}
+          <div class="w-full md:w-96 h-auto p-5 shadow-lg rounded-lg border-l-4 
+                      {% if lesson.lesson_completion == 100 %}
+                        bg-white border-green-500 hover:shadow-xl transition-all duration-300
+                      {% else %}
+                        bg-white border-blue-500 hover:shadow-xl transition-all duration-300
+                      {% endif %}">          <div class="flex items-center mb-3">
+            <div class="{% if lesson.lesson_completion == 100 %}bg-green-100{% else %}bg-blue-100{% endif %} rounded-full p-2 mr-3 flex-shrink-0 h-10 w-10 flex items-center justify-center">
+              <span class="font-semibold {% if lesson.lesson_completion == 100 %}text-green-600{% else %}text-blue-600{% endif %}">{{ loop.index }}</span>
+            </div>
+            <h2 class="text-xl font-semibold {% if lesson.lesson_completion == 100 %}text-green-800{% else %}text-gray-800{% endif %}">{{ lesson.lesson_title }}</h2>
+          </div>
 
-          <p class="text-sm text-gray-700 mb-2"><strong>Description:</strong> {{ lesson.lesson_content.description | safe}}</p>
-          <div class="text-sm text-gray-700 mb-2">
-            <strong>Examples:</strong>
-            <ul class="list-disc ml-5 mt-1">
+          <p class="text-gray-700 mb-4">{{ lesson.lesson_content.description | safe}}</p>
+
+          {% if lesson.lesson_content.examples and lesson.lesson_content.examples|length > 0 %}
+          <div class="bg-gray-50 rounded-md p-3 mb-4 border border-gray-100">
+            <h3 class="text-sm font-medium text-gray-700 mb-2">Examples:</h3>
+            <ul class="space-y-2">
               {% for example in lesson.lesson_content.examples %}
-                <li><strong>{{ example.idiom }}</strong>: {{ example.meaning }}</li>
+                <li class="flex">
+                  <span class="text-blue-500 mr-2">•</span>
+                  <span><span class="font-medium">{{ example.idiom }}</span>: {{ example.meaning }}</span>
+                </li>
               {% endfor %}
             </ul>
           </div>
+          {% endif %}
 
-          <div class="mt-4 text-sm text-gray-700">
-            <strong>Completion:</strong>
-
-            <div class="w-full bg-gray-400 rounded h-1 mt-1">
-              <div class="bg-green-500 h-1 rounded" style="width: {{ lesson.lesson_completion }}%"></div>
-            </div>
-            <div class="flex justify-end items-center mt-1">
-              <span class="text-sm text-gray-700">{{ lesson.lesson_completion }}%</span>
-              {% if lesson.lesson_completion == 100 %}
-                <span class="ml-2 text-emerald-500">Completed</span>
-              {% else %}
-                <span class="ml-2 text-red-500">In Progress</span>
-              {% endif %}
-            </div>
-
-            <div class="text-sm text-gray-700 mt-4">
-              <strong>Result:</strong> {{ lesson.lesson_right_answer }}%
-              <div class="w-full bg-gray-400 rounded h-1 mt-1">
-                <div class="bg-blue-500 h-1 rounded" style="width: {{ lesson.lesson_right_answer }}%"></div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <span class="text-sm font-medium text-gray-700">Completion</span>
+                <div class="flex items-center">
+                  <span class="text-sm font-medium {% if lesson.lesson_completion == 100 %}text-emerald-600{% else %}text-blue-600{% endif %}">
+                    {{ lesson.lesson_completion }}%
+                  </span>
+                  {% if lesson.lesson_completion == 100 %}
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 text-emerald-500" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                    </svg>
+                  {% endif %}
+                </div>
               </div>
-
-              <div class="flex justify-end items-center mt-1">
-                <span class="text-sm text-gray-700">{{ lesson.lesson_right_answer }}%</span>
-                {% if lesson.lesson_right_answer == 100 %}
-                  <span class="ml-2 text-emerald-500">Perfect</span>
-                {% else %}
-                  <span class="ml-2 text-red-500">Needs Improvement</span>
-                {% endif %}
+              <div class="w-full bg-gray-200 rounded-full h-2">
+                <div class="{% if lesson.lesson_completion == 100 %}bg-emerald-500{% else %}bg-blue-500{% endif %} h-2 rounded-full" 
+                     style="width: {{ lesson.lesson_completion }}%"></div>
+              </div>
+            </div>
+            
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <span class="text-sm font-medium text-gray-700">Score</span>
+                <div class="flex items-center">
+                  <span class="text-sm font-medium {% if lesson.lesson_right_answer > 80 %}text-emerald-600{% else %}text-orange-600{% endif %}">
+                    {{ lesson.lesson_right_answer }}%
+                  </span>
+                </div>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2">
+                <div class="{% if lesson.lesson_right_answer > 80 %}bg-emerald-500{% elif lesson.lesson_right_answer > 50 %}bg-yellow-500{% else %}bg-orange-500{% endif %} h-2 rounded-full" 
+                     style="width: {{ lesson.lesson_right_answer }}%"></div>
               </div>
             </div>
           </div>
 
-          <a href="program/{{user.current_program_id}}/lessons/{{ lesson.id }}" class="inline-block mt-2 px-4 py-2 text-white text-sm bg-blue-500 rounded hover:bg-blue-600 transition">
-            View Lesson
+          <a href="program/{{user.current_program_id}}/lessons/{{ lesson.id }}" 
+             class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
+            <span>View Lesson</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
           </a>
         </div>
       </div>
@@ -83,11 +118,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const lessonsWrapper = document.querySelector('.lessons-container-wrapper');
 
   if (!lessonOuterBlocks || lessonOuterBlocks.length < 2 || !svgContainer || !lessonsWrapper) {
-    // console.warn('Required elements for drawing diagonal lines are missing on this page.');
     return;
   }
 
-  function drawDiagonalLines() {
+  function drawCurvedConnections() {
     svgContainer.innerHTML = ''; 
     const wrapperRect = lessonsWrapper.getBoundingClientRect();
 
@@ -97,39 +131,101 @@ document.addEventListener('DOMContentLoaded', () => {
       const currentLessonCard = currentLessonOuterDiv.querySelector(':scope > div');
       const nextLessonCard = nextLessonOuterDiv.querySelector(':scope > div');
 
-      if (!currentLessonCard || !nextLessonCard) {
-        // console.warn('Could not find lesson card elements for line drawing.');
-        continue;
-      }
+      if (!currentLessonCard || !nextLessonCard) continue;
 
+      // Calculate positions
       const rect1 = currentLessonCard.getBoundingClientRect();
       const rect2 = nextLessonCard.getBoundingClientRect();
-      const startXViewport = rect1.left + rect1.width / 2;
-      const startYViewport = rect1.bottom;
-      const endXViewport = rect2.left + rect2.width / 2;
-      const endYViewport = rect2.top;
-      const x1 = startXViewport - wrapperRect.left;
-      const y1 = startYViewport - wrapperRect.top;
-      const x2 = endXViewport - wrapperRect.left;
-      const y2 = endYViewport - wrapperRect.top;
-
-      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-      line.setAttribute('x1', x1.toString());
-      line.setAttribute('y1', y1.toString());
-      line.setAttribute('x2', x2.toString());
-      line.setAttribute('y2', y2.toString());
-      line.setAttribute('stroke', 'rgba(107, 114, 128, 0.6)'); 
-      line.setAttribute('stroke-width', '2');
-      svgContainer.appendChild(line);
+      
+      // Determine if left or right for current and next
+      const isCurrentRight = i % 2 !== 0;
+      const isNextRight = (i + 1) % 2 !== 0;
+      
+      // Calculate start and end points
+      let startX, startY, endX, endY;
+      
+      // Current card bottom center
+      startX = rect1.left + rect1.width / 2 - wrapperRect.left;
+      startY = rect1.bottom - wrapperRect.top;
+      
+      // Next card top center
+      endX = rect2.left + rect2.width / 2 - wrapperRect.left;
+      endY = rect2.top - wrapperRect.top;
+      
+      // Create path for curved line
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      
+      // Calculate control points for smooth curve
+      const midY = startY + (endY - startY) / 2;
+      
+      // Adjust control points based on card positions
+      const ctrlPt1X = startX;
+      const ctrlPt1Y = midY - 20;
+      const ctrlPt2X = endX;
+      const ctrlPt2Y = midY + 20;
+      
+      // Create the bezier curve path
+      const pathD = `M ${startX} ${startY} C ${ctrlPt1X} ${ctrlPt1Y}, ${ctrlPt2X} ${ctrlPt2Y}, ${endX} ${endY}`;
+      
+      path.setAttribute('d', pathD);
+      path.setAttribute('fill', 'none');
+      path.setAttribute('stroke', 'rgba(59, 130, 246, 0.5)');
+      path.setAttribute('stroke-width', '3');
+      path.setAttribute('stroke-linecap', 'round');
+      
+      // Add completion indicator based on lesson status
+      const isCompleted = currentLessonCard.classList.contains('border-green-500');
+      if (isCompleted) {
+        path.setAttribute('stroke-dasharray', '8,3');
+        path.setAttribute('stroke', 'rgba(16, 185, 129, 0.7)');
+      }
+      
+      svgContainer.appendChild(path);
+      
+      // Add arrow marker at end of path
+      const arrow = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      
+      // Calculate angle for arrow
+      const dx = endX - ctrlPt2X;
+      const dy = endY - ctrlPt2Y;
+      const angle = Math.atan2(dy, dx);
+      
+      // Arrow points
+      const arrowLength = 10;
+      const arrowWidth = 6;
+      
+      const arrowX1 = endX - arrowLength * Math.cos(angle) + arrowWidth * Math.sin(angle);
+      const arrowY1 = endY - arrowLength * Math.sin(angle) - arrowWidth * Math.cos(angle);
+      const arrowX2 = endX - arrowLength * Math.cos(angle) - arrowWidth * Math.sin(angle);
+      const arrowY2 = endY - arrowLength * Math.sin(angle) + arrowWidth * Math.cos(angle);
+      
+      const arrowPath = `M ${endX} ${endY} L ${arrowX1} ${arrowY1} L ${arrowX2} ${arrowY2} Z`;
+      arrow.setAttribute('d', arrowPath);
+      arrow.setAttribute('fill', isCompleted ? 'rgba(16, 185, 129, 0.7)' : 'rgba(59, 130, 246, 0.5)');
+      
+      svgContainer.appendChild(arrow);
+      
+      // Add point at the start
+      const startPoint = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      startPoint.setAttribute('cx', startX);
+      startPoint.setAttribute('cy', startY);
+      startPoint.setAttribute('r', '4');
+      startPoint.setAttribute('fill', isCompleted ? 'rgba(16, 185, 129, 0.7)' : 'rgba(59, 130, 246, 0.5)');
+      svgContainer.appendChild(startPoint);
     }
   }
 
-  drawDiagonalLines();
+  drawCurvedConnections();
+  
+  // Handle resize with debounce
   let resizeTimeout;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(drawDiagonalLines, 150);
+    resizeTimeout = setTimeout(drawCurvedConnections, 150);
   });
+  
+  // Redraw when images load to ensure proper positioning
+  window.addEventListener('load', drawCurvedConnections);
 });
 </script>
 {% endblock %}
