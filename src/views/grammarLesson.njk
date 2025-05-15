@@ -4,10 +4,35 @@
 
 {% block content %}
 
-<p class="text-2xl my-2 ml-10"><strong>Title:</strong> {{ lesson.lesson_title }}</p>
+<div class="flex flex-col justify-start mt-8 pb-2 border-b border-gray-200 bg-white">
+    <p class="text-3xl font-bold w-full max-w-2xl ml-10">
+        {{ lesson.lesson_title }}
+    </p>
 
+    <div class="flex flex-row justify-end items-center mt-4 ml-10 pe-96">
+        <div class="flex justify-end gap-4">
+            <button
+                onclick="history.back()"
+                class="px-4 py-2 bg-blue-600 text-white shadow hover:bg-blue-700 transition duration-150 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                Go Back
+            </button>
+            <button
+                onclick="window.location.href='/quiz/{{ lesson.lesson_id }}'"
+                class=" px-4 py-2 bg-emerald-600 text-white shadow hover:bg-emerald-700 transition duration-150 focus:outline-none focus:ring-2 focus:ring-emerald-400">
+                Start Quiz
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="container mx-auto p-8 bg-white max-w-screen-md h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
+
+{{ lesson.lesson_content.description | safe}}
+
+</div>
+{# 
 <div class="my-4 ml-10">
-    <p class="text-lg"><strong>Description:</strong> {{ lesson.lesson_content.description }}</p>
+    <p class="text-lg"><strong>Description:</strong> {{ lesson.lesson_content.description | safe}}</p>
     <p class="text-lg"><strong>Level:</strong> {{ lesson.lesson_level }}</p>
 </div>
 
@@ -103,14 +128,14 @@
             </script>
         {% endfor %}
     </div>
-</div>
+</div> #}
 
-<div class="my-4 ml-10">
+{# <div class="my-4 ml-10">
     <button
         onclick="history.back()" 
         class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">
         Go Back
     </button>
-</div>
+</div> #}
 
 {% endblock %}
