@@ -1,116 +1,134 @@
 {% extends "layout.njk" %}
 
-{% block title %} Grammar {% endblock %}
+{% block title %} {{ lesson.lesson_title }} | Grammar {% endblock %}
 
 {% block content %}
-
-<p class="text-2xl my-2 ml-10"><strong>Title:</strong> {{ lesson.lesson_title }}</p>
-
-<div class="my-4 ml-10">
-    <p class="text-lg"><strong>Description:</strong> {{ lesson.lesson_content.description }}</p>
-    <p class="text-lg"><strong>Level:</strong> {{ lesson.lesson_level }}</p>
-</div>
-
-<div class="my-4 ml-10">
-    <h2 class="text-xl font-semibold text-blue-800 mb-2">Examples</h2>
-    <ul class="list-disc list-inside text-gray-700">
-        {% for example in lesson.lesson_content.examples %}
-            <li>{{ example }}</li>
-        {% endfor %}
-    </ul>
-</div>
-
-<div class="my-4 ml-10">
-    <h2 class="text-xl font-semibold text-blue-800 mb-4">Exercises</h2>
-    <div class="text-gray-700">
-        {% for exercise in questions %}
-            <div class="mb-6 p-4 border border-gray-300 rounded-lg shadow-md bg-white">
-                <p class="text-lg font-semibold text-gray-800 mb-2">
-                    {{ exercise.question_content.question }}
-                </p>
-                {% if exercise.question_type == "vocabulary" %}
-                    <p class="text-sm text-gray-600 mb-2"><strong>Options:</strong></p>
-                    <ul class="list-disc list-inside ml-4 text-gray-700">
-                        {% for option in exercise.question_content.options %}
-                            <li>{{ option }}</li>
-                        {% endfor %}
-                    </ul>
-                {% elseif exercise.question_type == "grammar" %}
-                    <p class="text-sm text-gray-600 mb-2"><strong>Grammar Explanation:</strong></p>
-                    <p class="text-gray-700">{{ exercise.question_content.explanation }}</p>
-                {% elseif exercise.question_type == "multiple-choice" %}
-                    <div class="flex flex-col gap-2 ml-4 text-gray-700">
-                        {% for option in exercise.question_content.options %}
-                            <div>
-                                <label class="inline-flex items-center">
-                                    <input type="checkbox" name="option-{{ loop.index }}" value="{{ option }}" class="mr-2">
-                                    {{ option }}
-                                </label>
-                            </div>
-                        {% endfor %}
+<div class="flex flex-col min-h-screen bg-gray-50">
+    <!-- Lesson Header -->
+    <div class="bg-white shadow">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+                <div class="flex items-center mb-4 md:mb-0">
+                    <div class="bg-blue-100 rounded-full p-3 mr-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
                     </div>
-                {% elseif exercise.question_type == "single-choice" %}
-                    <p class="text-sm text-gray-600 mb-2"><strong>Options:</strong></p>
-                    <ul class="list-disc list-inside ml-4 text-gray-700">
-                        {% for option in exercise.question_content.options %}
-                            <li>
-                                <label class="inline-flex items-center">
-                                    <input type="radio" name="option-{{ loop.index }}" value="{{ option }}" class="mr-2">
-                                    {{ option }}
-                                </label>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-                <button 
-                    onclick="verifyAnswer('{{ exercise.question_content.correctAnswer }}', this)" 
-                    class="mt-4 px-6 py-2 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                    disabled>
-                    Check Answer
-                </button>
-
-                <script>
-                    const button = document.querySelector('button[onclick^="verifyAnswer"]');
-                    const parentDiv1 = button.parentElement;
-                    const inputs = parentDiv1.querySelectorAll('input[name^="option"]');
-
-                    inputs.forEach(input => {
-                        input.addEventListener('change', () => {
-                            button.disabled = !Array.from(inputs).some(input => input.checked);
-                        });
-                    });
-                </script>
-                <p class="mt-2 text-sm text-gray-700 hidden result-message"></p>
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-800">{{ lesson.lesson_title }}</h1>
+                        {% if lesson.lesson_level %}
+                        <div class="mt-1 flex items-center">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                Level: {{ lesson.lesson_level }}
+                            </span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="flex gap-4">
+                    <button
+                        onclick="history.back()"
+                        class="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md shadow transition duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                        Go Back
+                    </button>
+                    <button
+                        onclick="window.location.href='/quiz/{{ lesson.id }}'"
+                        class="inline-flex items-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-md shadow transition duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                        </svg>
+                        Start Quiz
+                    </button>
+                </div>
             </div>
+        </div>
+    </div>
 
-            <script>
-                function verifyAnswer(correctAnswer, button) {
-                    const parentDiv2 = button.parentElement;
-                    const selectedOption = parentDiv2.querySelector('input[name^="option"]:checked');
-                    const selectedValue = selectedOption ? selectedOption.value : null;
+    <!-- Navigation Progress -->
+    <div class="bg-white border-t border-b border-gray-200 py-3">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center text-sm">
+            <div class="text-gray-600">Category: <span class="font-medium">Grammar</span></div>
+            <div class="flex items-center">
+                {% if prevLesson %}
+                <a href="/grammar/lessons/{{ prevLesson.id }}" class="text-blue-500 hover:text-blue-700 mr-6">Previous Lesson</a>
+                {% endif %}
+                {% if nextLesson %}
+                <a href="/grammar/lessons/{{ nextLesson.id }}" class="text-blue-500 hover:text-blue-700">Next Lesson</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 
-                    const resultMessage = parentDiv2.querySelector('.result-message');
-                    if (selectedValue === correctAnswer) {
-                        resultMessage.textContent = "Correct!";
-                        resultMessage.classList.remove('hidden', 'text-red-500');
-                        resultMessage.classList.add('text-green-500');
-                    } else {
-                        resultMessage.textContent = "Incorrect. Try again.";
-                        resultMessage.classList.remove('hidden', 'text-green-500');
-                        resultMessage.classList.add('text-red-500');
-                    }
-                }
-            </script>
-        {% endfor %}
+    <!-- Main Content -->
+    <div class="flex-grow py-8 overflow-y-auto">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white shadow-md rounded-lg">
+                <!-- Reading Progress Bar -->
+                <div class="w-full h-1 bg-gray-100">
+                    <div id="readingProgress" class="h-1 bg-blue-500" style="width: 0%"></div>
+                </div>
+                
+                <!-- Lesson Content -->
+                <div id="lessonContent" class="p-8 prose prose-blue max-w-none">
+                    {{ lesson.lesson_content.description | safe }}
+                </div>
+                
+                <!-- Bottom Navigation -->
+                <div class="p-6 bg-gray-50 rounded-b-lg border-t border-gray-200 flex justify-between">
+                    <button
+                        onclick="history.back()"
+                        class="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md transition duration-150 focus:outline-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                        Back
+                    </button>
+                    <button
+                        onclick="window.location.href='/quiz/{{ lesson.id }}'"
+                        class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-md shadow transition duration-150 focus:outline-none">
+                        Complete & Continue
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<div class="my-4 ml-10">
-    <button
-        onclick="history.back()" 
-        class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">
-        Go Back
-    </button>
-</div>
+{% endblock %}
 
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Reading progress tracking
+    const content = document.getElementById('lessonContent');
+    const progressBar = document.getElementById('readingProgress');
+    
+    window.addEventListener('scroll', () => {
+        if (content && progressBar) {
+            // Calculate how much of the content has been scrolled through
+            const windowHeight = window.innerHeight;
+            const contentBox = content.getBoundingClientRect();
+            const contentTop = contentBox.top;
+            const contentHeight = contentBox.height;
+            
+            // Calculate the percentage based on how much is visible in the viewport
+            let progress = 0;
+            if (contentTop < 0) {
+                // Content has scrolled up, calculate percentage scrolled
+                progress = Math.min(100, (-contentTop / (contentHeight - windowHeight)) * 100);
+            }
+            
+            // Update the progress bar width
+            progressBar.style.width = `${progress}%`;
+        }
+    });
+});
+</script>
 {% endblock %}

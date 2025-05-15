@@ -3,17 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}My Web App{% endblock %}</title>
-    <link rel="stylesheet" href="/css/tailwind.css">
+    <title>{% block title %}My Web App{% endblock %}</title>    <link rel="stylesheet" href="/css/tailwind.css">
+    <link rel="stylesheet" href="/css/lesson-animations.css">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 </head>
-<body class = "flex flex-2/12 flex-row h-screen bg-white">
+<body class = "flex flex-row h-screen bg-white">
 
-    <div class = "border-r p-3 mr-2 bg-blue-500">
+    <div class="flex flex-col flex-[2_2_0%] border-r p-3 bg-neutral-800">
         {% include "partials/header.njk" %}  {# Include header across all pages #}
     </div>
 
     <div class = "flex-10/12">
-        <main class = "flex flex-col min-h-11/12 bg-white">
+        <main class = "flex flex-col h-screen bg-white overflow-y-auto">
             {% block content %} {% endblock %}
         </main>
 

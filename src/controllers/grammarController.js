@@ -32,12 +32,37 @@ const getGrammarLesson = async (req, res) => {
 
         const lessonId = req.params.lessonId;
 
-        // Logic to handle the lesson based on the lessonId
+        // Logic to handle the lesson based on the lessonId 
         try {
+            // Get the current lesson and its questions
             const lesson = await lessonModel.getLessonById(lessonId);
             const questions = await questionModel.getQuestionsByLessonId(lessonId);
+            
+            // Get all grammar lessons to determine previous and next lessons
+            const allGrammarLessons = await lessonModel.getLessonsByType("Grammar");
+            
+            // Find the current lesson's index in the list
+            const currentIndex = allGrammarLessons.findIndex(l => l.id === parseInt(lessonId));
+            
+            // Determine previous and next lessons
+            let prevLesson = null;
+            let nextLesson = null;
+            
+            if (currentIndex > 0) {
+                prevLesson = allGrammarLessons[currentIndex - 1];
+            }
+            
+            if (currentIndex !== -1 && currentIndex < allGrammarLessons.length - 1) {
+                nextLesson = allGrammarLessons[currentIndex + 1];
+            }
+            
             if (lesson) {
-                res.render("grammarLesson", { lesson, questions });
+                res.render("grammarLesson", { 
+                    lesson, 
+                    questions, 
+                    prevLesson, 
+                    nextLesson 
+                });
             } else {
                 res.status(404).send('Lesson not found');
             }
