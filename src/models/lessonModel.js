@@ -77,7 +77,21 @@ async function getLessonsByLesson_Title(lesson_title) {
 }
 
 
+async function getLessonsByLevel(level) {
+    try {
+        const result = await pool.query(
+            'SELECT * FROM lesson WHERE lesson_level = $1 ORDER BY lesson_importance DESC',
+            [level]
+        );
+        return result.rows;
+    } catch (error) {
+        console.error('Error fetching lessons by level:', error);
+        throw error;
+    }
+}
+
+
 // Export functions so they can be used in other files
 module.exports = { 
-    addLesson, getLessonById, getLessonsByLesson_Title, updateLessonById, deleteLessonById, getLessonsByType
+    addLesson, getLessonById, getLessonsByLesson_Title, updateLessonById, deleteLessonById, getLessonsByType, getLessonsByLevel
 }
