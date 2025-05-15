@@ -382,10 +382,10 @@ async function addTestData() {
         );
 
 
-    createB2Lessons();
-    createA1Lessons();
+    //createB2Lessons();
+    //createA1Lessons();
 
-    createProgramForUser(1, 'B2');
+    //createProgramForUser(1, 'B2');
 
 
     // A1 Lessons
@@ -1359,7 +1359,7 @@ const lessonB2_1 = await addLesson(
     'B2' // lesson_level
 );
 
-console.log('Lesson "Finite and Non-finite Verbs" added:', lessonB2_1);
+console.log('Lesson "Finite and Non-finite Verbs" added:');
 
         // Assuming addQuestion is an async function that interacts with your database
 // and lessonB2_1 is the variable holding the result of adding the "Finite and Non-finite Verbs" lesson.
@@ -1469,7 +1469,7 @@ const lessonB2_2 = await addLesson(
     'B2' // lesson_level
 );
 
-console.log('Lesson "Substituting Modal Verbs" added:', lessonB2_2);
+console.log('Lesson "Substituting Modal Verbs" added:');
 
         // Assuming addQuestion is an async function that interacts with your database
 // and lessonB2_2 is the variable holding the result of adding the "Substituting Modal Verbs" lesson.
@@ -1576,7 +1576,7 @@ const lessonB2_3 = await addLesson(
     'B2' // lesson_level
 );
 
-console.log('Lesson "Conditional Verbs (Type 1, 2, 3)" added:', lessonB2_3);
+console.log('Lesson "Conditional Verbs (Type 1, 2, 3)" added:');
 
         // Assuming addQuestion is an async function that interacts with your database
 // and lessonB2_3 is the variable holding the result of adding the "Conditional Verbs (Type 1, 2, 3)" lesson.
@@ -1692,7 +1692,7 @@ const lessonB2_4 = await addLesson(
     'B2' // lesson_level
 );
 
-console.log('Lesson "Present Perfect Continuous Tense" added:', lessonB2_4);
+console.log('Lesson "Present Perfect Continuous Tense" added:');
 
 
         // Assuming addQuestion is an async function that interacts with your database
@@ -1799,7 +1799,7 @@ const lessonB2_5 = await addLesson(
     'B2' // lesson_level
 );
 
-console.log('Lesson "Past Perfect Tense" added:', lessonB2_5);
+console.log('Lesson "Past Perfect Tense" added:');
 
 // Assuming addQuestion is an async function that interacts with your database
 // and lessonB2_5 is the variable holding the result of adding the "Past Perfect Tense" lesson.
@@ -1904,7 +1904,7 @@ const lessonB2_6 = await addLesson(
     'B2' // lesson_level
 );
 
-console.log('Lesson "Past Perfect Continuous Tense" added:', lessonB2_6);
+console.log('Lesson "Past Perfect Continuous Tense" added:');
 
 
         // Assuming addQuestion is an async function that interacts with your database
@@ -2013,7 +2013,7 @@ const lessonB2_7 = await addLesson(
     'B2' // lesson_level
 );
 
-console.log('Lesson "Future Perfect Tense" added:', lessonB2_7);
+console.log('Lesson "Future Perfect Tense" added:');
 
 // Assuming addQuestion is an async function that interacts with your database
 // and lessonB2_7 is the variable holding the result of adding the "Future Perfect Tense" lesson.
@@ -2120,7 +2120,7 @@ const lessonB2_8 = await addLesson(
     'B2' // lesson_level
 );
 
-console.log('Lesson "Future Perfect Continuous Tense" added:', lessonB2_8);
+console.log('Lesson "Future Perfect Continuous Tense" added:');
 
         // Assuming addQuestion is an async function that interacts with your database
 // and lessonB2_8 is the variable holding the result of adding the "Future Perfect Continuous Tense" lesson.
@@ -2221,7 +2221,7 @@ const lessonB2_9 = await addLesson(
     'B2' // lesson_level
 );
 
-console.log('Lesson "Aspect" added:', lessonB2_9);
+console.log('Lesson "Aspect" added:');
 
 // Assuming addQuestion is an async function that interacts with your database
 // and lessonB2_9 is the variable holding the result of adding the "Aspect" lesson.
@@ -2328,7 +2328,7 @@ const lessonB2_10 = await addLesson(
     'B2' // lesson_level
 );
 
-console.log('Lesson "Perfective and Imperfective Aspect" added:', lessonB2_10);
+console.log('Lesson "Perfective and Imperfective Aspect" added:');
 
 // Assuming addQuestion is an async function that interacts with your database
 // and lessonB2_9 is the variable holding the result of adding the "Aspect" lesson.
@@ -2423,7 +2423,7 @@ const lessonB2_11 = await addLesson(
     'B2' // lesson_level
 );
 
-console.log('Lesson "Mood (Introduction)" added:', lessonB2_11);
+console.log('Lesson "Mood (Introduction)" added:');
 
         // Assuming addQuestion is an async function that interacts with your database
 // and lessonB2_11 is the variable holding the result of adding the "Mood (Introduction)" lesson.
@@ -2532,7 +2532,7 @@ const lessonB2_12 = await addLesson(
     'B2' // lesson_level
 );
 
-console.log('Lesson "Indicative Mood" added:', lessonB2_12);
+console.log('Lesson "Indicative Mood" added:');
 
         // Assuming addQuestion is an async function that interacts with your database
 // and lessonB2_12 is the variable holding the result of adding the "Indicative Mood" lesson.
@@ -2629,7 +2629,7 @@ const lessonB2_13 = await addLesson(
     'B2' // lesson_level
 );
 
-console.log('Lesson "Voice (Introduction)" added:', lessonB2_13);
+console.log('Lesson "Voice (Introduction)" added:');
 
         // Assuming addQuestion is an async function that interacts with your database
 // and lessonB2_13 is the variable holding the result of adding the "Voice (Introduction)" lesson.
@@ -2721,7 +2721,7 @@ const lessonB2_14 = await addLesson(
     'B2' // lesson_level
 );
 
-console.log('Lesson "Active Voice" added:', lessonB2_14);
+console.log('Lesson "Active Voice" added:');
 
 // Assuming addQuestion is an async function that interacts with your database
 // and lessonB2_14 is the variable holding the result of adding the "Active Voice" lesson.
@@ -2819,7 +2819,7 @@ const lessonB2_15 = await addLesson(
     'B2' // lesson_level
 );
 
-console.log('Lesson "Passive Voice" added:', lessonB2_15);
+console.log('Lesson "Passive Voice" added:');
 
 // and lessonB2_15 is the variable holding the result of adding the "Passive Voice" lesson.
 
@@ -2978,7 +2978,7 @@ const lessonB2_16 = await addLesson(
     'B2' // lesson_level
 );
 
-console.log('Lesson "Reported Speech (Indirect Speech)" added:', lessonB2_16);
+console.log('Lesson "Reported Speech (Indirect Speech)" added:');
 
 // and lessonB2_16 is the variable holding the result of adding the "Reported Speech (Indirect Speech)" lesson.
 
@@ -3102,7 +3102,7 @@ const lessonB2_17 = await addLesson(
     'B2' // lesson_level
 );
 
-console.log('Lesson "Relative Clauses" added:', lessonB2_17);
+console.log('Lesson "Relative Clauses" added:');
 
 
         // Assuming addQuestion is an async function that interacts with your database
@@ -3229,7 +3229,7 @@ const lessonB2_18 = await addLesson(
     'B2' // lesson_level
 );
 
-console.log('Lesson "Adverbial Clauses" added:', lessonB2_18);
+console.log('Lesson "Adverbial Clauses" added:');
 
 
         // Assuming addQuestion is an async function that interacts with your database
@@ -3344,7 +3344,7 @@ const lessonB2_19 = await addLesson(
     'B2' // lesson_level
 );
 
-console.log('Lesson "Complex Sentences" added:', lessonB2_19);
+console.log('Lesson "Complex Sentences" added:');
 
         // Assuming addQuestion is an async function that interacts with your database
 // and lessonB2_19 is the variable holding the result of adding the "Complex Sentences" lesson.
@@ -3450,7 +3450,7 @@ const lessonB2_20 = await addLesson(
     'B2' // lesson_level
 );
 
-console.log('Lesson "Compound-Complex Sentences" added:', lessonB2_20);
+console.log('Lesson "Compound-Complex Sentences" added:');
 
 // and lessonB2_20 is the variable holding the result of adding the "Compound-Complex Sentences" lesson.
 
@@ -3500,5 +3500,8 @@ console.log('Provided quiz questions added for "Compound-Complex Sentences" less
 }
 
 
+//addTestData();
 
+//createB2Lessons();
 
+//createProgramForUser(1, 'B2');
