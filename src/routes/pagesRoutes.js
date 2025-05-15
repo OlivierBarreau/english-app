@@ -5,7 +5,7 @@ const {getGrammar, getGrammarLesson} = require('../controllers/grammarController
 const {getVocabulary, getVocabularyLesson} = require('../controllers/vocabularyController'); // Import the controller
 const {getQuiz, submitQuiz} = require('../controllers/quizController'); // Import the quiz controller
 // const getExpressions = require('../controllers/expressionsController'); // Import the controller
-const { getToeicIntro, startToeicTest, getListeningTest, getReadingTest, getWritingTest, getFullToeicTest } = require('../controllers/toeicController'); // Import the TOEIC controller
+const { getToeicIntro, startToeicTest, getListeningTest, submitListeningTest, getReadingTest, submitReadingTest, getTestResults, getToeicHistory, getWritingTest, getFullToeicTest } = require('../controllers/toeicController'); // Import the TOEIC controller
 
 router.get('/', getHome); // Route to handle GET request for the home page
 router.get('/grammar', getGrammar); // Route to handle GET request for the grammar page
@@ -18,11 +18,15 @@ router.get('/program/:programId/lessons/:lessonId', getProgramLesson); // Route 
 router.get('/quiz/:lessonId', getQuiz); // Route to display the quiz for a specific lesson
 router.post('/quiz/:lessonId/submit', submitQuiz); // Route to handle quiz submissions
 
-// Route to handle GET request for the TOEIC introduction page
+// TOEIC test routes
 router.get('/toeic', getToeicIntro);
 router.post('/toeic/start', startToeicTest);
 router.get('/toeic/listening', getListeningTest);
+router.post('/toeic/listening/submit', submitListeningTest);
 router.get('/toeic/reading', getReadingTest);
+router.post('/toeic/reading/submit', submitReadingTest);
+router.get('/toeic/results/:resultId', getTestResults);
+router.get('/toeic/history', getToeicHistory);
 router.get('/toeic/writing', getWritingTest);
 router.get('/toeic/full-test', getFullToeicTest);
 

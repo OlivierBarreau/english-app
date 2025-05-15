@@ -43,11 +43,10 @@ const getProgramLesson = async (req, res) => {
 
             const lesson = await lessonModel.getLessonById(lessonId);
             const questions = await questionModel.getQuestionsByLessonId(lessonId);
-            // console.log(lesson);
+            
             if (lesson) {
                 if (lesson.lesson_type === "Vocabulary") {
                     res.render("vocabularyLesson", { lesson, questions });
-                    //  console.log("lessonId", lessonId);
                 }
                 else if (lesson.lesson_type === "Grammar") {
 
@@ -138,7 +137,6 @@ const getProgramLesson = async (req, res) => {
                     `;
                     res.render("grammarLesson", { lesson, questions });
 
-                    //  console.log("lessonId", lessonId);
                 }
                 // else if (lesson.type === "Listening") {
                 //     res.render("listeningLesson", { lesson, questions });

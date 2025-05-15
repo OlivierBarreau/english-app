@@ -1,0 +1,193 @@
+{% extends "layout.njk" %}
+
+{% block title %} TOEIC Test History {% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 py-8">
+    <div class="flex items-center justify-between mb-6">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-800">TOEIC Test History</h1>
+            <p class="text-sm text-gray-500">View and track your progress on the TOEIC test</p>
+        </div>
+        
+        <a href="/toeic" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+            Take New Test
+        </a>
+    </div>
+
+    {% if history and history.length > 0 %}
+    <!-- Progress chart -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <h2 class="text-lg font-medium text-gray-800 mb-4">Your TOEIC Score Progress</h2>
+        <div class="h-64 bg-gray-50 border rounded-lg p-2">
+            <!-- Chart will be inserted here by JavaScript -->
+            <canvas id="scoreChart"></canvas>
+        </div>
+    </div>
+    
+    <!-- Test history table -->
+    <div class="bg-white shadow overflow-hidden rounded-lg">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Listening</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Reading</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Score</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Level</th>
+                    <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Details</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                {% for test in history %}                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                        {{ test.completion_date | formatDate }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="h-2.5 w-2.5 rounded-full bg-blue-500 mr-2"></div>
+                            <span class="text-sm font-medium text-gray-900">{{ test.listening_score }}</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="h-2.5 w-2.5 rounded-full bg-purple-500 mr-2"></div>
+                            <span class="text-sm font-medium text-gray-900">{{ test.reading_score }}</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {{ test.total_score }} <span class="text-xs text-gray-500">/ 990</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        {% if test.total_score < 250 %}
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                            Beginner
+                        </span>
+                        {% elif test.total_score < 400 %}
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                            Intermediate
+                        </span>
+                        {% elif test.total_score < 600 %}
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                            Upper Intermediate
+                        </span>
+                        {% elif test.total_score < 780 %}
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-indigo-100 text-indigo-800">
+                            Advanced
+                        </span>
+                        {% else %}
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                            Proficient
+                        </span>
+                        {% endif %}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <a href="/toeic/results/{{ test.id }}" class="text-blue-600 hover:text-blue-900">View Results</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="bg-white shadow-lg rounded-lg p-8 text-center">
+        <div class="mb-4">
+            <div class="mx-auto bg-blue-100 rounded-full p-4 w-20 h-20 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+            </div>
+        </div>
+        <h2 class="text-xl font-medium text-gray-800 mb-2">No Test History Yet</h2>
+        <p class="text-gray-600 mb-6">You haven't completed any TOEIC tests yet. Take your first test to start tracking your progress.</p>
+        <a href="/toeic" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 shadow-sm">
+            Start Your First Test
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% if history and history.length > 0 %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('scoreChart').getContext('2d');
+        
+        // Extract data for the chart
+        const historyData = {{ history | dump(2) | safe }};
+        const dates = historyData.map(item => new Date(item.completion_date).toLocaleDateString());
+        const listeningScores = historyData.map(item => item.listening_score);
+        const readingScores = historyData.map(item => item.reading_score);
+        const totalScores = historyData.map(item => item.total_score);
+        
+        // Create the chart
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [
+                    {
+                        label: 'Total Score',
+                        data: totalScores,
+                        borderColor: 'rgb(34, 197, 94)',
+                        backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    },
+                    {
+                        label: 'Listening',
+                        data: listeningScores,
+                        borderColor: 'rgb(59, 130, 246)',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        borderDash: [5, 5],
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Reading',
+                        data: readingScores,
+                        borderColor: 'rgb(168, 85, 247)',
+                        backgroundColor: 'rgba(168, 85, 247, 0.1)',
+                        borderDash: [5, 5],
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 990,
+                        title: {
+                            display: true,
+                            text: 'Score'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Test Date'
+                        }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    legend: {
+                        position: 'top',
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endif %}
+{% endblock %}
