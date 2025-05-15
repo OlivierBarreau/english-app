@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}My Web App{% endblock %}</title>
     <link rel="stylesheet" href="/css/tailwind.css">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 </head>
 <body class = "flex flex-row h-screen bg-white">
 
@@ -13,7 +15,7 @@
     </div>
 
     <div class = "flex-10/12">
-        <main class = "flex flex-col h-screen bg-white">
+        <main class = "flex flex-col h-screen bg-white overflow-y-auto">
             {% block content %} {% endblock %}
         </main>
 

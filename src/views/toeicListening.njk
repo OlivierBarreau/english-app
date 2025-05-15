@@ -3,37 +3,211 @@
 {% block title %} TOEIC Listening Test {% endblock %}
 
 {% block content %}
-<h1 class="text-2xl my-4 ml-10">TOEIC Listening Test</h1>
-<p class="ml-10 mb-4 text-gray-600">Listen to the audio and answer the questions below.</p>
-
-<div class="ml-10 mb-4">
-    <audio controls class="w-full">
-        <source src="{{ audioFile }}" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-</div>
-
-<div class="ml-10">
-    <form action="/toeic/listening/submit" method="POST">
-        {% for question in questions %}
-        <div class="mb-4">
-            <h3 class="text-lg font-semibold">Question {{ loop.index }}: {{ question.question }}</h3>
-            {% if question.type == 'multiple-choice' %}
-            <ul class="list-disc list-inside">
-                {% for option in question.options %}
-                <li>
-                    <input type="radio" name="q{{ question.id }}" value="{{ option }}" required> {{ option }}
-                </li>
-                {% endfor %}
-            </ul>
-            {% elif question.type == 'short-answer' %}
-            <input type="text" name="q{{ question.id }}" class="border border-gray-300 rounded p-2 w-full" required>
-            {% endif %}
+<div class="max-w-6xl mx-auto px-4 py-6">
+    <!-- Timer and section header -->
+    <div class="sticky top-0 z-10 bg-white shadow-md rounded-lg mb-6 p-4">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">TOEIC Listening Test</h1>
+                <p class="text-sm text-gray-600">Listen to the audio and answer the questions</p>
+            </div>
+            
+            <div class="flex items-center mt-4 md:mt-0">
+                <div class="bg-blue-100 rounded-lg p-3 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <div>
+                        <div class="text-xs text-blue-600 font-medium">Time Remaining</div>
+                        <div id="timer" class="text-lg font-bold text-blue-800" data-duration="{{ testDuration }}">{{ testDuration }}:00</div>
+                    </div>
+                </div>
+            </div>
         </div>
-        {% endfor %}
+        
+        <!-- Progress bar -->
+        <div class="mt-4">
+            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div id="progressBar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+            </div>
+            <div class="flex justify-between mt-1">
+                <span class="text-xs text-gray-500" id="answeredCount">0/{{ questions|length }}</span>
+                <span class="text-xs text-gray-500">Complete all questions</span>
+            </div>
+        </div>
+    </div>
 
-        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">Submit</button>
-    </form>
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+        <div class="p-6">
+            <div class="mb-6 bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-yellow-700">
+                            <strong>Important:</strong> The listening test will automatically submit when the time expires. Do not refresh or leave the page.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <form id="listeningForm" action="/toeic/listening/submit" method="POST">
+                <input type="hidden" name="testId" value="{{ testId }}">
+                
+                {% for question in questions %}
+                <div class="question-container mb-8 p-5 border border-gray-200 rounded-lg" data-question-id="{{ question.id }}">
+                    <div class="flex items-center mb-4">
+                        <span class="bg-blue-600 text-white rounded-full w-7 h-7 flex items-center justify-center font-semibold mr-2">{{ loop.index }}</span>
+                        <h3 class="text-lg font-medium text-gray-800">{{ question.question_content.question }}</h3>
+                    </div>
+                    
+                    {% if question.question_type == 'image' %}
+                    <div class="mb-4">
+                        <img src="{{ question.question_content.imageUrl }}" alt="Question Image" class="max-w-full h-auto rounded-lg border">
+                    </div>
+                    {% endif %}
+                    
+                    {% if question.question_content.audio %}
+                    <div class="mb-4">
+                        <audio controls class="w-full">
+                            <source src="{{ question.question_content.audio }}" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="mt-4 space-y-3">
+                        {% for option in question.question_content.options %}                        <label class="flex items-start p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                            <input type="radio" name="answers[q{{ question.id }}]" value="{{ option }}" class="question-input mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500">
+                            <span class="ml-3 text-gray-700">{{ option }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+                
+                <div class="mt-8 flex justify-between items-center">
+                    <p class="text-sm text-gray-500">
+                        Listening section ({{ questions|length }} questions)
+                    </p>
+                    
+                    <button type="submit" id="submitBtn" class="px-6 py-3 bg-blue-600 text-white font-medium rounded-md shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Complete Listening Section
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Timer functionality
+        const timerElement = document.getElementById('timer');
+        const durationInMinutes = parseInt(timerElement.dataset.duration);
+        let timeRemaining = durationInMinutes * 60; // Convert to seconds
+        
+        const progressBar = document.getElementById('progressBar');
+        const answeredCountElement = document.getElementById('answeredCount');
+        const totalQuestions = {{ questions|length }};
+        const form = document.getElementById('listeningForm');
+        const inputs = document.querySelectorAll('.question-input');
+        
+        // Update the timer display
+        function updateTimer() {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            timerElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            
+            if (timeRemaining <= 300) { // 5 minutes left
+                timerElement.classList.add('text-red-600');
+                timerElement.parentElement.classList.replace('bg-blue-100', 'bg-red-100');
+            }
+            
+            if (timeRemaining <= 0) {
+                clearInterval(timerInterval);
+                // Auto-submit the form when time expires
+                form.submit();
+            }
+            
+            timeRemaining--;
+        }
+        
+        // Start the timer
+        const timerInterval = setInterval(updateTimer, 1000);
+        updateTimer();
+        
+        // Track answered questions and update progress
+        function updateProgress() {
+            let answeredCount = 0;
+            
+            inputs.forEach(input => {
+                if (input.checked) {
+                    // Find the parent question container
+                    const questionContainer = input.closest('.question-container');
+                    if (questionContainer) {
+                        questionContainer.classList.add('bg-blue-50', 'border-blue-200');
+                        answeredCount++;
+                    }
+                }
+            });
+            
+            // Update the progress bar and counter
+            const progress = (answeredCount / totalQuestions) * 100;
+            progressBar.style.width = `${progress}%`;
+            answeredCountElement.textContent = `${answeredCount}/${totalQuestions}`;
+        }
+        
+        // Listen for changes on inputs
+        inputs.forEach(input => {
+            input.addEventListener('change', updateProgress);
+        });
+        
+        // Form submission
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+              // Convert form data to JSON format
+            const formData = new FormData(form);
+            const answers = {};
+            
+            for (const [key, value] of formData.entries()) {
+                if (key.startsWith('answers[')) {
+                    // Extract the question ID from the key (e.g., "answers[q5]" -> "q5")
+                    const questionId = key.match(/\[([^\]]+)\]/)[1];
+                    answers[questionId] = value;
+                }
+            }
+              // Submit the form using fetch API
+            fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ answers }),
+            })
+            .then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url;
+                } else {
+                    return response.json();
+                }
+            })
+            .then(data => {
+                if (data && !data.success) {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error submitting form:', error);
+                alert('An error occurred while submitting the test. Please try again.');
+            });
+        });
+    });
+</script>
 {% endblock %}

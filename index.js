@@ -12,12 +12,33 @@ const profileRoutes = require('./src/routes/profileRoutes'); // Import the profi
 const app = express();
 
 // Configure Nunjucks
-nunjucks.configure("src/views", {
+const env = nunjucks.configure("src/views", {
     autoescape: true,
     express: app
   });
 
+// Add custom date filter using a simple date formatting function
+env.addFilter('formatDate', function(date, format) {
+    if (!date) return '';
+    const d = new Date(date);
+    
+    // Simple formatting without external libraries
+    const monthsShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const monthsFull = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const year = d.getFullYear();
+    const month = format && format.includes('MMMM') ? monthsFull[d.getMonth()] : monthsShort[d.getMonth()];
+    const day = d.getDate();
+    const hours = d.getHours();
+    const minutes = d.getMinutes().toString().padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = (hours % 12) || 12;
+    
+    return `${month} ${day}, ${year} at ${formattedHours}:${minutes} ${ampm}`;
+});
+
 app.set("view engine", "njk"); // Use .njk for Nunjucks files
+// set json midedleware
+app.use(express.json());
 
 app.use(express.static("public"));
 // Middleware to parse form data
