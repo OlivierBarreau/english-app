@@ -14,7 +14,7 @@ const addUser = async (req, res) => {
         formData: { firstname, lastname, email, english_lvl }
       });
     }    // Create and save the user
-    const newUser = User.addUser(email, password, firstname, lastname, english_lvl, current_program_id);
+    const newUser = await User.addUser(email, password, firstname, lastname, english_lvl, current_program_id);
     if (!newUser) {
       return res.render('signup', {
         error: 'Error creating user. Please try again.',
