@@ -1,4 +1,5 @@
 const User = require('../models/userModel'); // Import the User model
+const { createProgramForUser } = require('../models/globalModels.js');
 
 const addUser = async (req, res) => {
   try {
@@ -20,6 +21,8 @@ const addUser = async (req, res) => {
         formData: { firstname, lastname, email, english_lvl }
       });
     }
+    const program = await createProgramForUser(newUser.id,english_lvl);
+    await User.updateUserById(newUser.id, { current_program_id: program.id });
 
     // Redirect to login page or dashboard
     res.redirect('/signin');  } catch (error) {
