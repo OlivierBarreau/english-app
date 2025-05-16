@@ -6,14 +6,14 @@ const signoutUser = require('../controllers/signoutUser'); // Import the control
 
 // Render the sign-in page
 router.get('/signin', (req, res) => {
-    res.render('signin');
+    res.render('signin', { error: null, email: '' });
 });
 
 // Handle POST request for sign-in
 router.post('/signin', signinUser);
 
 router.get('/signup', (req, res) => {
-    res.render("signup");
+    res.render("signup", { error: null, formData: {} });
 });
 
 // Route to handle user signup
