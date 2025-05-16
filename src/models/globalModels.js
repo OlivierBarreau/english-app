@@ -59,6 +59,7 @@ async function createProgramForUser(userId, userEnglishLevel) {
                 await addQuestionResult(lessonResult.id, questionId, false, "");
             }
         }
+        
 
         return program;
     } catch (error) {

@@ -1,4 +1,5 @@
 const User = require('../models/userModel'); // Import the User model
+const { createProgramForUser } = require('../models/globalModels.js');
 
 const addUser = async (req, res) => {
   try {
@@ -11,10 +12,12 @@ const addUser = async (req, res) => {
     }
 
     // Create and save the user
-    const newUser = User.addUser(email, password, firstname, lastname, english_lvl, current_program_id);
+    const newUser = await User.addUser(email, password, firstname, lastname, english_lvl, current_program_id);
     if (!newUser) {
       return res.status(400).send('Error creating user');
     }
+    const program = await createProgramForUser(newUser.id,english_lvl);
+    await User.updateUserById(newUser.id, { current_program_id: program.id });
 
     // Redirect to login page or dashboard
     res.redirect('/signin');
