@@ -7,20 +7,27 @@ const addUser = async (req, res) => {
     // Check if the email already exists
     const existingUser = await User.getUserByLogin(email);
     if (existingUser) {
-      return res.status(400).send('Email already in use');
-    }
-
-    // Create and save the user
+      // Return to the signup page with an error message
+      return res.render('signup', {
+        error: 'Email already in use. Please use a different email address.',
+        formData: { firstname, lastname, email, english_lvl }
+      });
+    }    // Create and save the user
     const newUser = User.addUser(email, password, firstname, lastname, english_lvl, current_program_id);
     if (!newUser) {
-      return res.status(400).send('Error creating user');
+      return res.render('signup', {
+        error: 'Error creating user. Please try again.',
+        formData: { firstname, lastname, email, english_lvl }
+      });
     }
 
     // Redirect to login page or dashboard
-    res.redirect('/signin');
-  } catch (error) {
+    res.redirect('/signin');  } catch (error) {
     console.error('Error creating user:', error);
-    res.status(500).send('Internal server error');
+    return res.render('signup', {
+      error: 'An error occurred during registration. Please try again later.',
+      formData: { firstname, lastname, email, english_lvl }
+    });
   }
 };
 

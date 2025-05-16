@@ -4,47 +4,57 @@
 
 {% block content %}
 
-<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-  <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">  <div class="sm:mx-auto sm:w-full sm:max-w-sm">
     <img class="mx-auto h-14 w-auto" src="/images/langue.png" alt="Your Company">
     <h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Create your account</h2>
   </div>
 
-  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    <form class="space-y-6" action="/signup" method="POST">
+  {% if error %}
+  <div class="mt-6 sm:mx-auto sm:w-full sm:max-w-sm">
+    <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-4">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <div class="ml-3">
+          <p class="text-sm text-red-700">{{ error }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
 
-      <div>
+  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+    <form class="space-y-6" action="/signup" method="POST">      <div>
         <label for="english_lvl" class="block text-sm/6 font-medium text-gray-900">English Level</label>
         <div class="mt-2">
           <select name="english_lvl" id="english_lvl" required class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6">
-        <option value="" disabled selected>Select your level</option>
-        <option value="beginner">Beginner</option>
-        <option value="A1">A1</option>
-        <option value="A2">A2</option>
-        <option value="B1">B1</option>
-        <option value="B2">B2</option>
-        <option value="C1">C1</option>
-        <option value="C2">C2</option>
+        <option value="" disabled {% if not formData.english_lvl %}selected{% endif %}>Select your level</option>
+        <option value="beginner" {% if formData.english_lvl == "beginner" %}selected{% endif %}>Beginner</option>
+        <option value="A1" {% if formData.english_lvl == "A1" %}selected{% endif %}>A1</option>
+        <option value="A2" {% if formData.english_lvl == "A2" %}selected{% endif %}>A2</option>
+        <option value="B1" {% if formData.english_lvl == "B1" %}selected{% endif %}>B1</option>
+        <option value="B2" {% if formData.english_lvl == "B2" %}selected{% endif %}>B2</option>
+        <option value="C1" {% if formData.english_lvl == "C1" %}selected{% endif %}>C1</option>
+        <option value="C2" {% if formData.english_lvl == "C2" %}selected{% endif %}>C2</option>
           </select>
         </div>
-      </div>
-
-      <div>
+      </div>      <div>
         <label for="firstname" class="block text-sm/6 font-medium text-gray-900">Firstname</label>
         <div class="mt-2">
-          <input type="firstname" name="firstname" id="firstname" autocomplete="firstname" required class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6">
+          <input type="firstname" name="firstname" id="firstname" autocomplete="firstname" value="{{ formData.firstname or '' }}" required class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6">
         </div>
-      </div>
-      <div>
+      </div>      <div>
         <label for="lastname" class="block text-sm/6 font-medium text-gray-900">Lastname</label>
         <div class="mt-2">
-          <input type="lastname" name="lastname" id="lastname" autocomplete="lastname" required class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6">
+          <input type="lastname" name="lastname" id="lastname" autocomplete="lastname" value="{{ formData.lastname or '' }}" required class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6">
         </div>
-      </div>
-      <div>
+      </div>      <div>
         <label for="email" class="block text-sm/6 font-medium text-gray-900">Email address</label>
         <div class="mt-2">
-          <input type="email" name="email" id="email" autocomplete="email" required class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6">
+          <input type="email" name="email" id="email" autocomplete="email" value="{{ formData.email or '' }}" required class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6">
         </div>
       </div>
 
