@@ -36,6 +36,7 @@ async function addUser(login, password, firstname, lastname, english_lvl, curren
         console.error('Error adding user:', error);
         throw error;
     }
+
 }
 
 // Function to update user by ID
