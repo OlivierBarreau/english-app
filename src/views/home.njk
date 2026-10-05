@@ -305,7 +305,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
       // Check lesson completion status
       const isCompleted = currentLessonCard.classList.contains('lesson-completed');
-      
+      console.log(isCompleted);
       if (isCompleted) {
         path.setAttribute('stroke', 'rgba(16, 185, 129, 0.8)');
         path.setAttribute('marker-end', 'url(#arrow-complete)');
