@@ -4,14 +4,14 @@ Application web d'apprentissage de l'anglais développée en Node.js / Express, 
 
 ## Description
 
-English APP est une plateforme permettant à des utilisateurs de progresser en anglais à travers :
+English APP est une plateforme permettant à des utilisateurs de progresser en anglais :
 
-- **Authentification** : inscription, connexion et gestion de session (`src/routes/auth.js`).
-- **Profil utilisateur** : consultation et modification du profil, changement de mot de passe (`src/routes/profileRoutes.js`).
-- **Leçons & programmes** : grammaire et vocabulaire organisés en leçons et programmes de progression (`lessonModel.js`, `programModel.js`, `program_lessonModel.js`).
-- **Quiz & questions** : exercices avec suivi des résultats par question et par leçon (`questionModel.js`, `question_resultModel.js`, `lesson_resultModel.js`).
-- **Préparation au TOEIC** : modules dédiés à l'entraînement (listening, reading, writing, test complet, historique des résultats) accessibles via `/toeic/*`.
-- **Articles et expressions** : pages de contenu complémentaire (`/articles`, `/expressions`).
+- **Authentification** : inscription, connexion et gestion de session
+- **Profil utilisateur** : consultation et modification du profil, changement de mot de passe
+- **Leçons & programmes** : grammaire et vocabulaire organisés en leçons et programmes de progression 
+- **Quiz & questions** : exercices avec suivi des résultats par question et par leçon
+- **Préparation au TOEIC** : modules dédiés à l'entraînement (listening, reading, writing, test complet, historique des résultats)
+- **Articles et expressions** : pages de contenu complémentaire
 
 ## Architecture du projet
 
@@ -95,10 +95,10 @@ psql -U postgres -d englishdb -f db_data.sql
 ### 5. Génération des styles Tailwind CSS
 
 ```bash
-npm run tailwind:css
+npm run build
 ```
 
-> ⚠️ **Scripts CSS actuellement cassés** : `npm run build` référence des sous-scripts (`tailwind`, `autoprefixer`) absents de `package.json`, et `npm run tailwind:css` pointe vers un fichier `public/styles/style.css` inexistant (le fichier source réel est `public/css/style.css`) avec une configuration PostCSS/Tailwind v4 incompatible (`postcss.config.js` utilise le plugin `tailwindcss` alors que `@tailwindcss/postcss` est installé). Ces scripts sont à corriger avant de pouvoir régénérer le CSS Tailwind ; en attendant, le fichier déjà compilé `public/css/tailwind.css` reste utilisable tel quel.
+Cette commande compile `public/css/style.css` (avec Tailwind CSS v4 et Autoprefixer) vers `public/css/tailwind.css`, le fichier chargé par les templates (`src/views/layout.njk`).
 
 ### 6. Lancement de l'application
 
@@ -122,8 +122,8 @@ L'application est accessible sur [http://localhost:8000](http://localhost:8000).
 |------------------------|------------------------------------------------------|
 | `npm start`            | Démarre le serveur avec Node.js                      |
 | `npm run dev`          | Démarre le serveur avec rechargement automatique     |
-| `npm run build`        | Référence des scripts manquants, actuellement en échec |
-| `npm run tailwind:css` | Pointe vers un fichier source inexistant, actuellement en échec |
+| `npm run build`        | Compile les styles Tailwind CSS (+ autoprefixer)     |
+| `npm run tailwind:css` | Compile `public/css/style.css` en `public/css/tailwind.css` |
 
 ## Auteurs
 

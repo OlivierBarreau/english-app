@@ -7,9 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "build": "npm run tailwind && npm run autoprefixer",
+    "build": "npm run tailwind:css",
     "prod": "",
-    "tailwind:css": "postcss public/styles/style.css -o public/styles/output.css"
+    "tailwind:css": "postcss public/css/style.css -o public/css/tailwind.css"
   },
   "author": "Olivier, Lucas",
   "license": "ISC",
