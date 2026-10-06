@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Web App{% endblock %}</title>
+    <link rel="stylesheet" href="/css/tailwind.css">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body class = "flex flex-2/12 flex-row h-screen bg-white">
+    
+    <div class = "flex-10/12">
+        <main class = "flex flex-col min-h-11/12 bg-white">
+            {% block content %} {% endblock %}
+        </main>
+
+        {% include "partials/footer.njk" %}  {# Include footer across all pages #}
+    </div>
+</body>
+</html>
